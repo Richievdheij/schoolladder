@@ -1,0 +1,145 @@
+/* Design tokens. The only file with hex values: use var(--token) everywhere
+   else. The palette is raw, the semantic tokens say what a colour is for. */
+
+:root {
+  /* palette */
+  --brand-navy: #0e0b2c;
+  --brand-violet: #23155e;
+  --brand-purple: #5130cb;
+  --brand-lavender: #ad89f6;
+  --brand-lilac: #c9abf9;
+  --brand-mist: #e9e3fd;
+  --white: #ffffff;
+
+  --brand-purple-15: rgb(81 48 203 / 15%);
+  --brand-purple-30: rgb(81 48 203 / 30%);
+  --brand-purple-40: rgb(81 48 203 / 40%);
+
+  /* surfaces */
+  --surface-page: var(--brand-navy);
+  --surface-1: #1a1245;
+  --surface-2: #1e1550;
+  --surface-band: var(--brand-violet);
+
+  /* text. --brand-purple is not a text colour on dark: 2.4:1. */
+  --text-heading: var(--brand-mist);
+  --text-body: var(--brand-lilac);
+  --text-muted: var(--brand-lavender);
+  --text-on-accent: var(--brand-mist);
+
+  /* borders */
+  --border-subtle: #2a1d6b;
+  --border-strong: var(--brand-purple);
+
+  /* accent */
+  --accent: var(--brand-purple);
+  --accent-hover: #6440da;
+  --accent-soft: var(--brand-purple-15);
+  --focus-ring: var(--brand-lavender);
+
+  /* status. The *-text variants are for status text on a dark surface. */
+  --status-info: #2563eb;
+  --status-info-text: #93b4ff;
+  --status-success: #16a34a;
+  --status-success-text: #7ee2a8;
+  --status-warning: #d97706;
+  --status-warning-text: #f6c177;
+  --status-error: #dc2626;
+  --status-error-text: #ff9d9d;
+  --text-on-status: var(--white);
+
+  /* gradients */
+  --gradient-accent: linear-gradient(90deg, var(--brand-purple) 0%, var(--brand-lavender) 100%);
+  --gradient-dark: linear-gradient(180deg, var(--brand-navy) 0%, var(--brand-violet) 100%);
+
+  /* typography */
+  --font-heading: "Outfit", "Trebuchet MS", sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  --fs-display: clamp(2.75rem, 6vw, 4.5rem); /* 44 - 72 px */
+  --fs-h1: clamp(2.25rem, 5vw, 3.5rem);      /* 36 - 56 px */
+  --fs-h2: clamp(1.75rem, 4vw, 3rem);        /* 28 - 48 px */
+  --fs-h3: 2rem;                             /* 32 px */
+  --fs-h4: 1.5rem;                           /* 24 px */
+  --fs-h5: 1rem;                             /* 16 px */
+  --fs-h6: 0.875rem;                         /* 14 px */
+
+  --fs-xl: 1.25rem;    /* 20 px */
+  --fs-lg: 1.125rem;   /* 18 px */
+  --fs-md: 1rem;       /* 16 px, default */
+  --fs-sm: 0.875rem;   /* 14 px */
+  --fs-xs: 0.75rem;    /* 12 px */
+  --fs-2xs: 0.6875rem; /* 11 px */
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.3;
+  --lh-body: 1.6;
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --ls-heading: -0.01em;
+  --ls-label: 0.5px;
+  --ls-overline: 2px;
+
+  /* spacing, 8 px baseline */
+  --space-2xs: 0.125rem; /*  2 px */
+  --space-xs: 0.25rem;   /*  4 px */
+  --space-sm: 0.5rem;    /*  8 px */
+  --space-md: 0.75rem;   /* 12 px */
+  --space-lg: 1rem;      /* 16 px */
+  --space-xl: 1.5rem;    /* 24 px */
+  --space-2xl: 2rem;     /* 32 px */
+  --space-3xl: 3rem;     /* 48 px */
+  --space-4xl: 4rem;     /* 64 px */
+
+  /* radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px;
+
+  /* shadow */
+  --shadow-sm: 0 2px 4px -1px rgb(14 11 44 / 25%);
+  --shadow-md: 0 4px 8px -2px rgb(14 11 44 / 35%);
+  --shadow-lg: 0 16px 32px -6px rgb(14 11 44 / 45%);
+  --shadow-glow: 0 0 24px var(--brand-purple-40);
+
+  /* layout */
+  --container: 1200px;
+  --gutter: var(--space-xl);
+  --header-height: 72px;
+
+  --transition: 150ms ease;
+}
+
+/* class="theme-light" on a section or on body flips to the light set.
+   Components need no changes for it. */
+.theme-light {
+  --surface-page: #f8f6fe;
+  --surface-1: #f3effc;
+  --surface-2: var(--white);
+  --surface-band: #e2d8f8;
+
+  --text-heading: var(--brand-violet);
+  --text-body: #2a1d6b;
+  --text-muted: var(--brand-purple);
+
+  --border-subtle: #e2d8f8;
+  --border-strong: var(--brand-purple-40);
+
+  --status-info-text: #1d4ed8;
+  --status-success-text: #15803d;
+  --status-warning-text: #b45309;
+  --status-error-text: #b91c1c;
+
+  --shadow-sm: 0 2px 4px -1px rgb(35 21 94 / 8%);
+  --shadow-md: 0 4px 8px -2px rgb(35 21 94 / 10%);
+  --shadow-lg: 0 16px 32px -6px rgb(35 21 94 / 14%);
+
+  background-color: var(--surface-page);
+  color: var(--text-body);
+}
