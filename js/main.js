@@ -1,4 +1,4 @@
-/* Runs on every page, loaded through includes/footer.php. */
+/* Runs on every page. */
 
 document.addEventListener("DOMContentLoaded", () => {
 
