@@ -130,9 +130,10 @@
   --section-padding-tight: var(--space-lg); /* 16 px */
   --header-height: 56px;
 
-  /* The bottom nav belongs to the bottom-nav component: <main> reserves this
-     much room so the last line of a page is never hidden behind it. */
-  --bottom-nav-height: 64px;
+  /* How much room <main> keeps free at the bottom, so the last line of a page
+     never ends up behind the bottom nav. That bar floats: 81px tall plus the
+     16px it sits off the edge, and the rest is breathing room. */
+  --bottom-nav-height: 112px;
 
   /* The smallest thing a finger can reliably hit. WCAG 2.5.5. */
   --tap-target: 44px;

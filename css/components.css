@@ -8,7 +8,8 @@
      page and cards   where a title sits, and the container around content
      topbar           logo, links on desktop, menu button
      menu             the full-screen panel behind the menu button
-     avatar */
+     avatar
+     bottom nav       the floating bar, below 900px */
 
 /* ----------------------------------------------------------------- icons */
 
@@ -398,6 +399,85 @@ body.is-menu-open {
   line-height: 1;
 }
 
+/* ------------------------------------------------------------ bottom nav */
+
+/* Floats above the content instead of sticking to the edge. Only below
+   900px: above that the same five links sit in the topbar. */
+.bottom-nav {
+  position: fixed;
+  bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: var(--z-bottom-nav);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  gap: var(--space-xs);
+  width: calc(100% - var(--gutter) * 2);
+  max-width: 440px;
+  padding: var(--space-sm);
+  border-radius: var(--radius-full);
+  background-color: var(--surface-2);
+  box-shadow: var(--shadow-md);
+  transform: translateX(-50%);
+}
+
+@media (min-width: 900px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+.bottom-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.bottom-nav__item.is-active {
+  color: var(--text-heading);
+}
+
+/* The label is positioned against this wrapper, not against the whole item,
+   so it lands just under the icon and inside the pill. */
+.bottom-nav__icon-wrap {
+  position: relative;
+  display: flex;
+  transition: transform var(--transition);
+}
+
+.bottom-nav__item.is-active .bottom-nav__icon-wrap {
+  transform: translateY(-6px);
+}
+
+.bottom-nav__icon-wrap .icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* Absolute, so showing it does not make the active item taller than the
+   rest and shove the whole row around. */
+.bottom-nav__label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  display: none;
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.bottom-nav__item.is-active .bottom-nav__label {
+  display: block;
+}
+
 /* -------------------------------------------------------- hover, pointers */
 
 /* Behind (hover: hover), because on a touchscreen a hover state stays stuck
@@ -409,6 +489,7 @@ body.is-menu-open {
     background-color: var(--accent-soft);
   }
 
+  .bottom-nav__item:hover,
   .topnav__link:hover,
   .menu__link:hover {
     background-color: var(--accent-soft);
