@@ -1,0 +1,62 @@
+/* Reusable UI components. Loaded after base.css. */
+
+/* bottom navigation, mobile. */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-lg);
+  transform: translateX(-50%);
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  width: calc(100% - var(--space-xl) * 2);
+  max-width: 440px;
+  padding: var(--space-sm) var(--space-xl);
+
+  border-radius: var(--radius-full);
+  background-color: var(--surface-2);
+  box-shadow: var(--shadow-md);
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.bottom-nav__item:hover {
+  color: var(--text-heading);
+}
+
+.bottom-nav__item.is-active {
+  color: var(--white);
+}
+
+.bottom-nav__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.bottom-nav__label {
+  display: none;
+  font-family: var(--font-body);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+}
+
+.bottom-nav__item.is-active .bottom-nav__label {
+  display: block;
+}
+
+body:has(.bottom-nav) {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0));
+}
