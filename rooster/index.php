@@ -1,8 +1,20 @@
 <?php
 
 $pageTitle = 'Rooster';
-//get the events of the week
-//get the events of the day
+
+//connect db
+require __DIR__ . '/../includes/config.php';
+
+//query to get events of the week
+$currentDay = 0;
+//from the day get the week start and end
+$weekStart = 0;
+$weekEnd = 0;
+$query = "SELECT * FROM `events` WHERE start_time > $weekStart AND end_time < $weekEnd";
+$result = mysqli_query($db, $query);
+
+//get the array for the currentDaySchedule
+
 
 
 ?>
@@ -13,6 +25,7 @@ $pageTitle = 'Rooster';
 <body>
 
 <main>
+    <?=$result?>
     <section id="schedule-box">
         <h1>Rooster</h1>
         <p>uitleg</p>
@@ -25,6 +38,11 @@ $pageTitle = 'Rooster';
                 <th>Vr</th>
             </tr>
             <!--like 10 lesson hour blocks-->
+            <!--put the the events in the right place-->
+            <?php
+            //if the timestamp is in the array put in the info inside
+            //else empty
+            ?>
             <tr>
                 <th>8:00</th>
                 <td>
@@ -39,6 +57,9 @@ $pageTitle = 'Rooster';
     </section>
     <section id="day-schedule list">
         <!--the amount based of lessons based of today-->
+        <?php
+        //foreach currentDayschedule as here-under
+        ?>
         <div>
             <h3>vaknaam/eventnaam</h3>
             <p>docent - locatie</p>
