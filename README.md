@@ -47,7 +47,8 @@ schoolladder/
 ├── css/
 │   ├── tokens.css     kleuren, fonts, maten. Het enige bestand met hexcodes
 │   ├── base.css       element-defaults en layouthelpers
-│   ├── components.css alles wat op meer dan één pagina terugkomt
+│   ├── components.css gedeelde bouwstenen (.icon, .card, .page__head)
+│   ├── components/    één bestand per component, gelijk aan de naam in includes/
 │   └── pages/         CSS die bij één pagina hoort
 ├── js/
 ├── images/icons/      losse SVG-iconen (Lucide, ISC-licentie)
@@ -81,8 +82,14 @@ zelf; dit zijn de regels eromheen.
 | ------------------------ | ---------------------------------------------------------------------------------- |
 | `tokens.css`             | Kleuren, fonts, maten. Het enige bestand met hexcodes.                             |
 | `base.css`               | Element-defaults en de layouthelpers: `.container`, `.section`, `.stack`, `.grid`. |
-| `components.css`         | Alles wat op meer dan één pagina terugkomt: `.card`, `.topbar`, `.menu`.           |
+| `components.css`         | Gedeelde bouwstenen die meerdere componenten gebruiken: `.icon`, `.card`, `.page__head`. |
+| `css/components/<naam>.css` | De stijl van één component. De naam is gelijk aan het PHP-bestand in `includes/`. |
 | `css/pages/<pagina>.css` | Alles wat maar op één pagina voorkomt.                                             |
+
+Een component heeft dus twee bestanden met dezelfde naam: `includes/navbar.php` en
+`css/components/navbar.css`. Zoek je waar iets gestyled wordt, dan weet je het pad al.
+Nieuwe component? Link 'm er ook bij in `includes/header.php` — dat gebeurt niet
+vanzelf, want componenten staan op elke pagina en niet op één.
 
 **Je pagina krijgt automatisch z'n eigen CSS.** Zet een bestand in `css/pages/` met
 dezelfde naam als je `$page` en het wordt erbij geladen. Geen bestand, geen request — je

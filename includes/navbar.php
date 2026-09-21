@@ -105,9 +105,23 @@ $logo = BASE_URL . 'images/schoolladder-logo-trimmed.png';
             <ul class="menu__list">
                 <?php foreach ($navItems as $key => $item): ?>
                     <?php if ($item['group'] !== 'account') { continue; } ?>
-                    <?php $active = $key === $page; ?>
+
+                    <?php
+                    $active = $key === $page;
+
+                    $classes = ['menu__link'];
+
+                    if ($key === 'logout') {
+                        $classes[] = 'menu__link--danger';
+                    }
+
+                    if ($active) {
+                        $classes[] = 'is-active';
+                    }
+                    ?>
+
                     <li class="menu__item">
-                        <a class="menu__link<?= $active ? ' is-active' : '' ?><?= $key === 'logout' ? ' menu__link--danger' : '' ?>"
+                        <a class="<?= implode(' ', $classes) ?>"
                            href="<?= BASE_URL . $item['url'] ?>"
                            <?= $active ? 'aria-current="page"' : '' ?>>
                             <?= icon($item['icon']) ?>

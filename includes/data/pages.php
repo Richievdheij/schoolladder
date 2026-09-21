@@ -24,19 +24,18 @@ require_once __DIR__ . '/../config.php';
            inside, so it ends in a slash. '' is the homepage
    icon    the file in images/icons, without .svg
    group   which block of the menu panel it lands in
-   bottom  in the bottom nav (max 5) and in the topbar on desktop */
+   bottom  in the bottom nav (max 5) and in the topbar on desktop
+   accent  the highlighted circle in the middle of the bottom nav. Exactly
+           one item, and it has to be the third of the five with 'bottom',
+           otherwise that circle sits off-centre
+
+   The order below is the order everywhere: topbar, menu panel and bottom
+   nav. */
 $navItems = [
     'dashboard' => [
-        'label'  => 'Mijn ladder',
+        'label'  => 'Ladder',
         'url'    => '',
         'icon'   => 'trending-up',
-        'group'  => 'pages',
-        'bottom' => true,
-    ],
-    'ranking' => [
-        'label'  => 'Ranglijst',
-        'url'    => 'ranking/',
-        'icon'   => 'trophy',
         'group'  => 'pages',
         'bottom' => true,
     ],
@@ -46,6 +45,14 @@ $navItems = [
         'icon'   => 'file-text',
         'group'  => 'pages',
         'bottom' => true,
+    ],
+    'ranking' => [
+        'label'  => 'Ranglijst',
+        'url'    => 'ranking/',
+        'icon'   => 'trophy',
+        'group'  => 'pages',
+        'bottom' => true,
+        'accent' => true,
     ],
     'schedule' => [
         'label'  => 'Rooster',

@@ -131,9 +131,10 @@
   --header-height: 56px;
 
   /* How much room <main> keeps free at the bottom, so the last line of a page
-     never ends up behind the bottom nav. That bar floats: 81px tall plus the
-     16px it sits off the edge, and the rest is breathing room. */
-  --bottom-nav-height: 112px;
+     never ends up behind the bottom nav. That bar floats: 89px tall, 16px off
+     the edge, and the circle in the middle sticks out another 15px above it.
+     The rest is breathing room. */
+  --bottom-nav-height: 128px;
 
   /* The smallest thing a finger can reliably hit. WCAG 2.5.5. */
   --tap-target: 44px;
