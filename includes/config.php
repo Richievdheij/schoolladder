@@ -26,6 +26,24 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * Print an icon from images/icons. The SVG is put straight into the page so
+ * stroke="currentColor" works: the icon takes the colour of the text next to
+ * it, which is what makes the active state colour its icon along with it.
+ */
+function icon(string $name): string
+{
+    $file = __DIR__ . '/../images/icons/' . basename($name) . '.svg';
+
+    if (!is_file($file)) {
+        /* Without this a typo vanishes without a trace: no icon shows up and
+           you go hunting through your CSS. Now it is in the page source. */
+        return DEBUG ? '<!-- icon "' . e($name) . '" does not exist -->' : '';
+    }
+
+    return file_get_contents($file);
+}
+
 /** Return the database connection. Connects on first use. */
 function db(): PDO
 {

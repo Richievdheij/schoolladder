@@ -130,8 +130,18 @@
   --section-padding-tight: var(--space-lg); /* 16 px */
   --header-height: 56px;
 
+  /* The bottom nav belongs to the bottom-nav component: <main> reserves this
+     much room so the last line of a page is never hidden behind it. */
+  --bottom-nav-height: 64px;
+
   /* The smallest thing a finger can reliably hit. WCAG 2.5.5. */
   --tap-target: 44px;
+
+  /* Stacking order, in one place. Every z-index in the project comes from
+     this list, so you never have to guess what a 9999 somewhere was for. */
+  --z-bottom-nav: 100;
+  --z-topbar: 200;
+  --z-menu: 300;
 
   --transition: 150ms ease;
 }
