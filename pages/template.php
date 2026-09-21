@@ -5,6 +5,7 @@ $pageTitle = 'Nieuwe pagina';
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+    
 <?php require __DIR__ . '/../includes/header.php'; ?>
 <body>
 
