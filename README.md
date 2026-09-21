@@ -69,3 +69,18 @@ schoolladder/
 └── pages/
     └── template.php     Kopieer dit bestand voor een nieuwe pagina
 ```
+
+## CSS-afspraken
+
+Mobile first. Elke waarde in `tokens.css` is de telefoonwaarde, grotere schermen krijgen een
+override in een media query. Schrijf dus alleen `min-width`, en alleen op deze vier stappen:
+480, 640, 900 en 1200.
+
+Drie dingen die je kunnen verrassen:
+
+- Knoppen en `select` zijn minimaal 44px hoog (`--tap-target`), groot genoeg voor een vinger.
+  Kleiner nodig? Zet `min-height: 0` op dat ene component.
+- Overschrijf tokens alleen in `tokens.css` zelf. Zet je `:root { --gutter: 40px }` in
+  `components.css`, dan wint dat van alle breakpoints en is de waarde overal hetzelfde.
+- `a:hover` staat achter `@media (hover: hover)`, want op touch blijft een hover-state plakken
+  na een tik. Je eigen `:hover` in een component werkt gewoon zoals je verwacht.
