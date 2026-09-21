@@ -26,6 +26,7 @@ $pageStyle = $page === '' ? '' : 'css/pages/' . basename($page) . '.css';
 $hasPageStyle = $pageStyle !== '' && is_file(dirname(__DIR__) . '/' . $pageStyle);
 
 ?>
+
 <head>
     <meta charset="UTF-8">
     <?php /* viewport-fit=cover is what makes env(safe-area-inset-*) return
@@ -44,7 +45,8 @@ $hasPageStyle = $pageStyle !== '' && is_file(dirname(__DIR__) . '/' . $pageStyle
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components/navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components/bottom-nav.css">
-<?php if ($hasPageStyle): ?>
-    <link rel="stylesheet" href="<?= BASE_URL . $pageStyle ?>">
-<?php endif; ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/portal.css">
+    <?php if ($hasPageStyle): ?>
+        <link rel="stylesheet" href="<?= BASE_URL . $pageStyle ?>">
+    <?php endif; ?>
 </head>
