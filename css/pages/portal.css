@@ -10,7 +10,7 @@ form {
   }
 
   h1 {
-    color: var(--text-heading);
+    font-size: var(--fs-h1);
   }
 
   label {
@@ -42,7 +42,6 @@ form {
     margin-top: 10px;
     margin-bottom: 5px;
     color: var(--brand-mist);
-    border-radius: 8px;
     font-weight: bold;
     background: inherit;
     border: 2px solid;
@@ -53,7 +52,6 @@ form {
 
   button:hover {
     cursor: pointer;
-    color: var(--accent-hover);
     border-color: var(--brand-lilac);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -70,7 +68,6 @@ form {
   padding: var(--space-xl);
   border-radius: var(--radius-xl);
   background-color: var(--brand-violet);
-  border: 2px solid var(--);
   width: 480px;
 }
 
