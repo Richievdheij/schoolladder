@@ -30,6 +30,8 @@ video {
   height: auto;
 }
 
+/* Keep these at 16px or larger. Below that iOS zooms the whole page in the
+   moment the field gets focus, and it never zooms back out. */
 button,
 input,
 select,
@@ -38,12 +40,27 @@ textarea {
   color: inherit;
 }
 
+/* Anything you tap needs room for a fingertip. Links in a sentence are left
+   out on purpose: they belong in the text flow, not in a 44px box. */
+button,
+select,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  min-height: var(--tap-target);
+}
+
 html {
   scroll-behavior: smooth;
+
+  /* Without this iOS inflates the text the moment you turn the phone sideways. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   min-height: 100vh;
+  min-height: 100dvh; /* Discounts the address bar on mobile. */
   background-color: var(--surface-page);
   color: var(--text-body);
   font-family: var(--font-body);
@@ -51,6 +68,9 @@ body {
   font-weight: var(--fw-regular);
   line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+
+  /* A long compound word must wrap, not push the page wider than the screen. */
+  overflow-wrap: break-word;
 }
 
 /* Headings already get the right font, colour and size. Add nothing yourself. */
@@ -117,8 +137,12 @@ a {
   transition: color var(--transition);
 }
 
-a:hover {
-  color: var(--text-muted);
+/* Pointer devices only. On a touchscreen a hover state stays stuck on the link
+   after you tap it. */
+@media (hover: hover) {
+  a:hover {
+    color: var(--text-muted);
+  }
 }
 
 ul,
@@ -172,15 +196,19 @@ hr {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+
+  /* max() keeps the content clear of the notch when the phone is sideways. */
+  padding-inline:
+    max(var(--gutter), env(safe-area-inset-left))
+    max(var(--gutter), env(safe-area-inset-right));
 }
 
 .section {
-  padding-block: var(--space-4xl);
+  padding-block: var(--section-padding);
 }
 
 .section--tight {
-  padding-block: var(--space-2xl);
+  padding-block: var(--section-padding-tight);
 }
 
 .grid {

@@ -1,5 +1,16 @@
 /* Design tokens. The only file with hex values: use var(--token) everywhere
-   else. The palette is raw, the semantic tokens say what a colour is for. */
+   else. The palette is raw, the semantic tokens say what a colour is for.
+
+   Mobile first: every value below is the phone value. Bigger screens override
+   it in the media queries under :root. Only ever write min-width queries, and
+   only on these four steps:
+
+     480px   large phone
+     640px   tablet portrait
+     900px   tablet landscape, small laptop
+     1200px  desktop
+
+   They are not tokens because var() does not work in a media query condition. */
 
 :root {
   /* palette */
@@ -57,13 +68,16 @@
   --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", "Courier New", monospace;
 
-  --fs-display: clamp(2.75rem, 6vw, 4.5rem); /* 44 - 72 px */
-  --fs-h1: clamp(2.25rem, 5vw, 3.5rem);      /* 36 - 56 px */
-  --fs-h2: clamp(1.75rem, 4vw, 3rem);        /* 28 - 48 px */
-  --fs-h3: 2rem;                             /* 32 px */
-  --fs-h4: 1.5rem;                           /* 24 px */
-  --fs-h5: 1rem;                             /* 16 px */
-  --fs-h6: 0.875rem;                         /* 14 px */
+  /* Headings grow from 360 px to 1280 px and then stop. The rem in the middle
+     term is what makes them follow the reader's own font size: with a bare vw
+     the text would refuse to grow on zoom, which fails WCAG 1.4.4. */
+  --fs-display: clamp(2.25rem, 1.37rem + 3.91vw, 4.5rem); /* 36 - 72 px */
+  --fs-h1: clamp(2rem, 1.41rem + 2.61vw, 3.5rem);         /* 32 - 56 px */
+  --fs-h2: clamp(1.625rem, 1.09rem + 2.39vw, 3rem);       /* 26 - 48 px */
+  --fs-h3: clamp(1.5rem, 1.3rem + 0.87vw, 2rem);          /* 24 - 32 px */
+  --fs-h4: clamp(1.25rem, 1.15rem + 0.43vw, 1.5rem);      /* 20 - 24 px */
+  --fs-h5: 1rem;                                          /* 16 px */
+  --fs-h6: 0.875rem;                                      /* 14 px */
 
   --fs-xl: 1.25rem;    /* 20 px */
   --fs-lg: 1.125rem;   /* 18 px */
@@ -108,12 +122,34 @@
   --shadow-lg: 0 16px 32px -6px rgb(14 11 44 / 45%);
   --shadow-glow: 0 0 24px var(--brand-purple-40);
 
-  /* layout */
+  /* layout. The four below are phone values and get overridden per breakpoint
+     right under this block. */
   --container: 1200px;
-  --gutter: var(--space-xl);
-  --header-height: 72px;
+  --gutter: var(--space-lg);                /* 16 px */
+  --section-padding: var(--space-2xl);      /* 32 px */
+  --section-padding-tight: var(--space-lg); /* 16 px */
+  --header-height: 56px;
+
+  /* The smallest thing a finger can reliably hit. WCAG 2.5.5. */
+  --tap-target: 44px;
 
   --transition: 150ms ease;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: var(--space-xl);                 /* 24 px */
+    --section-padding: var(--space-3xl);       /* 48 px */
+    --section-padding-tight: var(--space-xl);  /* 24 px */
+  }
+}
+
+@media (min-width: 900px) {
+  :root {
+    --section-padding: var(--space-4xl);       /* 64 px */
+    --section-padding-tight: var(--space-2xl); /* 32 px */
+    --header-height: 72px;
+  }
 }
 
 /* class="theme-light" on a section or on body flips to the light set.
