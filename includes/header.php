@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/config.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,5 +19,3 @@ require_once __DIR__ . '/config.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>css/base.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
 </head>
-<body>
-<main>
