@@ -8,10 +8,7 @@ form {
     width: 100%;
     margin-top: 8px;
   }
-
-  h1 {
-    font-size: var(--fs-h1);
-  }
+  
 
   label {
     font-weight: bold;
@@ -100,4 +97,12 @@ form {
     font-weight: bold;
     color: var(--status-error-text);
   }
+}
+
+.logo {
+  display: block;
+  padding: 0;
+  margin: 0 auto var(--space-md);
+  height: 80px;
+  width: auto;
 }

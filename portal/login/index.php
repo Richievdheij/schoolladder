@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
 <body>
     <main style="display: flex; flex-direction: column; gap: 1em;">
         <div class="container">
+            <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
             <h1>Login</h1>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
