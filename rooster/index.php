@@ -19,20 +19,43 @@ $currentDayName = date('l');
 $currentYear = date('Y');
 $weekOffset = -1;                //weirdly the offset starts from -1, so 0 is next week, -2 is previous week, etc
 
-$weekStart = strtotime("monday $weekOffset week");
-$weekEnd = strtotime("sunday $weekOffset week");
+function getWeekEvents($weekOffset)
+{
+    $weekStart = strtotime("monday $weekOffset week 0:00");
+    $weekEnd = strtotime("sunday $weekOffset week 23:00");
 
-//connect db
-require __DIR__ . '/../includes/config.php';    //gives a db as variable (not $db)
+    //connect db
+    require __DIR__ . '/../includes/config.php';    //gives a db as variable (not $db)
 
-//query to get events of the week
-$query = "SELECT * FROM `events` WHERE start_time>$weekStart AND start_time<$weekEnd";
-$result = mysqli_query(db, $query);
-$weekTimes = mysqli_fetch_all($result, MYSQLI_ASSOC);
-print_r($weekTimes);
+    //query to get events of the week
+    //need to join the teacher name and the subject name and only from the right class
+    $query = "SELECT * FROM `events` WHERE start_time>$weekStart AND start_time<$weekEnd";
+
+    $result = mysqli_query(db, $query);
+    $weekEvents = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    //close the db
+    mysqli_close(db);
+
+    return $weekEvents;
+}
+
+function makeEvent(){
+//    $startTime;
+//    $endTime;
+//    $name;
+//    $classId;
+//    $teacherId;
+//    $subjectId;
+//    $location;
+
+    require __DIR__ . '/../includes/config.php';
+//    $query = ""
+}
+$weekEvents = getWeekEvents($weekOffset);
+
 
 //get the array for the currentDaySchedule
-
 
 
 ?>
@@ -48,7 +71,7 @@ print_r($weekTimes);
         <p>uitleg</p>
         <table>
             <tr>
-                <td>W<?=$currentWeekNumber?></td>
+                <td>W<?= $currentWeekNumber ?></td>
                 <th>Ma</th>
                 <th>Di</th>
                 <th>Wo</th>
@@ -76,13 +99,24 @@ print_r($weekTimes);
     <section id="day-schedule list">
         <!--the amount based of lessons based of today-->
         <?php
-        //foreach currentDayschedule as here-under
+        //foreach currentDaySchedule as here-under
+        $beginDay = strtotime("this day 0:00");
+        $endDay = strtotime("this day 23:00");
+
+        foreach ($weekEvents as $weekEvent) {
+            if ($weekEvent['start_time'] > $beginDay && $weekEvent['end_time'] < $endDay) {
+                //make the day schedule box
+
+                ?>
+                <div class="day-event">
+                    <h3><?= $weekEvent['name'] ?> - <?= $weekEvent['subject'] ?></h3>
+                    <p><?= $weekEvent['teacher_name'] ?> - <?= $weekEvent['location'] ?></p>
+                    <h4><?= $weekEvent['start_time'] ?> - <?= $weekEvent['end_time'] ?></h4>
+                </div>
+                <?php
+            }
+        }
         ?>
-        <div>
-            <h3>vaknaam/eventnaam</h3>
-            <p>docent - locatie</p>
-            <h4>begintijd - eindtijd</h4>
-        </div>
     </section>
 </main>
 
