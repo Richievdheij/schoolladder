@@ -1,17 +1,35 @@
 <?php
-
+//page basis
 $pageTitle = 'Rooster';
 
+//fetching from the db: the week from the 1st and last day of the week
+
+//how does datetime work again???
+/*
+print_r(time());                            // returns the time now as a number
+print_r(date("Y-m-d H:i:s", time()));       // returns the time as a readable format
+print_r(mktime(10,0,0));                    //hour,minute,second,month,day,year returns:the raw ass time
+print_r(date('l'));                         //returns the day as the name of that day
+print_r(date('W'));                         //returns the nth week of the year
+pint_r(strtotime(monday));                          //returns the datetime of the string that is written
+*/
+
+$currentWeekNumber = date('W');
+$currentDayName = date('l');
+$currentYear = date('Y');
+$weekOffset = -1;                //weirdly the offset starts from -1, so 0 is next week, -2 is previous week, etc
+
+$weekStart = strtotime("monday $weekOffset week");
+$weekEnd = strtotime("sunday $weekOffset week");
+
 //connect db
-require __DIR__ . '/../includes/config.php';
+require __DIR__ . '/../includes/config.php';    //gives a db as variable (not $db)
 
 //query to get events of the week
-$currentDay = 0;
-//from the day get the week start and end
-$weekStart = 0;
-$weekEnd = 0;
-$query = "SELECT * FROM `events` WHERE start_time > $weekStart AND end_time < $weekEnd";
-$result = mysqli_query($db, $query);
+$query = "SELECT * FROM `events` WHERE start_time>$weekStart AND start_time<$weekEnd";
+$result = mysqli_query(db, $query);
+$weekTimes = mysqli_fetch_all($result, MYSQLI_ASSOC);
+print_r($weekTimes);
 
 //get the array for the currentDaySchedule
 
@@ -25,12 +43,12 @@ $result = mysqli_query($db, $query);
 <body>
 
 <main>
-    <?=$result?>
     <section id="schedule-box">
         <h1>Rooster</h1>
         <p>uitleg</p>
         <table>
             <tr>
+                <td>W<?=$currentWeekNumber?></td>
                 <th>Ma</th>
                 <th>Di</th>
                 <th>Wo</th>
@@ -38,7 +56,7 @@ $result = mysqli_query($db, $query);
                 <th>Vr</th>
             </tr>
             <!--like 10 lesson hour blocks-->
-            <!--put the the events in the right place-->
+            <!--put the events in the right place-->
             <?php
             //if the timestamp is in the array put in the info inside
             //else empty
