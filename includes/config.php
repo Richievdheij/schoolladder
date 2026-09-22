@@ -20,6 +20,9 @@ const DEBUG = true;
 ini_set('display_errors', DEBUG ? '1' : '0');
 error_reporting(E_ALL);
 
+define("db", mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME));
+
+
 /** Escape a value before printing it in HTML. */
 function e(?string $value): string
 {
