@@ -32,6 +32,13 @@
   --surface-2: #1e1550;
   --surface-band: var(--brand-violet);
 
+  /* A tile inside a card. Half-transparent on purpose: on a gradient like the
+     hero a fixed colour is lighter than the background at the top and darker
+     at the bottom, and ends up muddy in the middle. This is always one step
+     lighter than whatever sits behind it. */
+  --surface-overlay: rgb(255 255 255 / 7%);
+  --surface-overlay-strong: rgb(255 255 255 / 12%);
+
   /* text. --brand-purple is not a text colour on dark: 2.4:1. */
   --text-heading: var(--brand-mist);
   --text-body: var(--brand-lilac);
@@ -171,6 +178,10 @@
   --surface-1: #f3effc;
   --surface-2: var(--white);
   --surface-band: #e2d8f8;
+
+  /* Dark instead of light: white is invisible on a light card. */
+  --surface-overlay: rgb(35 21 94 / 5%);
+  --surface-overlay-strong: rgb(35 21 94 / 9%);
 
   --text-heading: var(--brand-violet);
   --text-body: #2a1d6b;

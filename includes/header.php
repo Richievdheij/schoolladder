@@ -25,6 +25,12 @@ $pageTitle = $label === '' ? SITE_NAME : $label . ' · ' . SITE_NAME;
 $pageStyle = $page === '' ? '' : 'css/pages/' . basename($page) . '.css';
 $hasPageStyle = $pageStyle !== '' && is_file(dirname(__DIR__) . '/' . $pageStyle);
 
+/* The login and register screens share one stylesheet, so neither of them
+   matches the rule above. It is linked by hand here, and only for those two:
+   portal.css redefines .container and .section, so anywhere else it would
+   squeeze the whole page into a 480px violet box. */
+$isPortal = in_array($page, ['login', 'register'], true);
+
 ?>
 
 <head>
@@ -45,7 +51,9 @@ $hasPageStyle = $pageStyle !== '' && is_file(dirname(__DIR__) . '/' . $pageStyle
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components/navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components/bottom-nav.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/portal.css">
+    <?php if ($isPortal): ?>
+        <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/portal.css">
+    <?php endif; ?>
     <?php if ($hasPageStyle): ?>
         <link rel="stylesheet" href="<?= BASE_URL . $pageStyle ?>">
     <?php endif; ?>

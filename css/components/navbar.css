@@ -303,23 +303,8 @@ body.is-menu-open {
   overflow: hidden;
 }
 
-/* ---------------------------------------------------------------- avatar */
-
-.avatar {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-full);
-  background-image: var(--gradient-accent);
-  color: var(--text-on-accent);
-  font-family: var(--font-heading);
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--ls-label);
-  line-height: 1;
-}
+/* The avatar used to live here. The dashboard hero shows it too, so it moved
+   to components.css: two components use it, and that is the rule. */
 
 /* -------------------------------------------------------- hover, pointers */
 
