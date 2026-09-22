@@ -1,4 +1,15 @@
 <?php
+ob_start();
+session_start();
+
+if (!empty($_SESSION['user'])) {
+    header('Location: /');
+    exit;
+}
+
+include_once("../../includes/config.php");
+$db = db();
+
 $pageTitle = 'Register | Schoolladder';
 
 $errors = null;
@@ -6,8 +17,8 @@ $errors = null;
 if (isset($_POST['submit'])) {
     $name = htmlentities($_POST['name']);
     $email = htmlentities($_POST['email']);
-    $password = htmlentities($_POST['password']);
-    $password_confirm = htmlentities($_POST['password-confirm']);
+    $password = $_POST['password'];
+    $password_confirm = $_POST['password-confirm'];
 
     if (!isset($name) || $name === '') {
         $errors[] = "Naam is verplicht";
@@ -28,6 +39,18 @@ if (isset($_POST['submit'])) {
     if ($password !== $password_confirm) {
         $errors[] = "Wachtwoorden moeten hetzelfde zijn";
     }
+
+    if (empty($errors)) {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+        $query = "INSERT INTO `users` SET name = :name, email = :email, password = :password;";
+        $statement = $db->prepare($query);
+
+        if ($statement->execute([":name" => $name, ":email" => $email, ":password" => $password])) {
+            header('Location: /portal/login');
+            exit;
+        }
+    }
 }
 
 ?>
@@ -36,13 +59,16 @@ if (isset($_POST['submit'])) {
 <?php require __DIR__ . '/../../includes/header.php'; ?>
 
 <body>
-    <main style="display: flex; flex-direction: column; gap: 1em;">
+    <?php require __DIR__ . '/../../includes/navbar.php'; ?>
+    <main class="page" style="margin-top: 1rem;">
         <div class="container">
-            <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
-            <h1>Register</h1>
+            <div class="logoContainer">
+                <h1 style="flex: 1;">Register</h1>
+                <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
+            </div>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
-        <form action="" method="post" style="display: flex; flex-direction: column; gap: 1em;">
+        <form action="" method="post" style="display: flex; flex-direction: column;">
             <?php if (!empty($errors)): ?>
                 <div class="error">
                     <?php foreach ($errors as $error): ?>
@@ -80,8 +106,11 @@ if (isset($_POST['submit'])) {
         </form>
     </main>
 
-    <?php require __DIR__ . '/../../includes/footer.php'; ?>
+    <?php require __DIR__ . '/../../includes/bottom-nav.php'; ?>
 
 </body>
+
+<script src="<?= BASE_URL ?>js/navbar.js"></script>
+<script src="<?= BASE_URL ?>js/main.js"></script>
 
 </html>

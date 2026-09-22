@@ -8,7 +8,6 @@ form {
     width: 100%;
     margin-top: 8px;
   }
-  
 
   label {
     font-weight: bold;
@@ -44,14 +43,16 @@ form {
     border: 2px solid;
     border-radius: var(--radius-md);
     border-color: var(--brand-mist);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
   }
 
   button:hover {
     cursor: pointer;
     border-color: var(--brand-lilac);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   button:active {
@@ -100,9 +101,16 @@ form {
 }
 
 .logo {
-  display: block;
+  display: flex;
   padding: 0;
-  margin: 0 auto var(--space-md);
+  margin: 0 auto;
   height: 80px;
   width: auto;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  /* justify-content: space-between; */
 }
