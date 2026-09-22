@@ -67,7 +67,12 @@ Een pagina die nog niet bestaat toont dan het dashboard in plaats van een 404.
 
 1. Start MySQL in Herd en open phpMyAdmin.
 2. Maak een database `schoolladder` aan met collatie `utf8mb4_general_ci`.
-3. Controleer de gegevens bovenin `includes/config.php`.
+3. Importeer eerst `database.sql` en daarna `database-subjects.sql`. Die volgorde
+   telt: de eerste maakt het schema, de tweede vult de 356 officiële schoolvakken.
+4. Controleer de gegevens bovenin `includes/config.php`.
+
+Waar die bestanden vandaan komen en hoe je een tabel toevoegt staat in
+[`docs/data.md`](docs/data.md).
 
 Gebruik de `db()` helper. Die verbindt pas bij de eerste aanroep, dus een pagina zonder
 database werkt ook als MySQL niet draait. Waarden uit een formulier of URL gaan **nooit**
