@@ -1,0 +1,116 @@
+form {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  margin: 0 auto;
+
+  div {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  label {
+    font-weight: bold;
+    color: var(--brand-mist);
+  }
+
+  input {
+    background-color: inherit;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--brand-mist);
+    width: 100%;
+  }
+
+  input:focus,
+  input:active {
+    border-radius: 0;
+    border-bottom: 2px solid var(--accent-hover);
+    outline: none;
+  }
+
+  input::placeholder {
+    color: color-mix(in srgb, var(--brand-mist) 50%, transparent);
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: var(--brand-mist);
+    font-weight: bold;
+    background: inherit;
+    border: 2px solid;
+    border-radius: var(--radius-md);
+    border-color: var(--brand-mist);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  button:hover {
+    cursor: pointer;
+    border-color: var(--brand-lilac);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  button:active {
+    color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    transform: translateY(0px);
+  }
+}
+
+.container {
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  background-color: var(--brand-violet);
+  width: 480px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.error {
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--status-error-text);
+  border: 2px solid var(--status-error);
+  border-radius: var(--radius-xl);
+  color: var(--status-error);
+  font-weight: bold;
+  text-align: left;
+  font-size: var(--fs-sm);
+}
+
+.error-input {
+  input {
+    border-bottom: 2px solid var(--status-error);
+  }
+  input::placeholder {
+    color: color-mix(in srgb, var(--status-error-text) 50%, transparent);
+  }
+
+  label {
+    font-weight: bold;
+    color: var(--status-error-text);
+  }
+}
+
+.logo {
+  display: flex;
+  padding: 0;
+  margin: 0 auto;
+  height: 80px;
+  width: auto;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  /* justify-content: space-between; */
+}

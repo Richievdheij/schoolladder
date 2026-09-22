@@ -130,8 +130,20 @@
   --section-padding-tight: var(--space-lg); /* 16 px */
   --header-height: 56px;
 
+  /* How much room <main> keeps free at the bottom, so the last line of a page
+     never ends up behind the bottom nav. That bar floats: 89px tall, 16px off
+     the edge, and the circle in the middle sticks out another 15px above it.
+     The rest is breathing room. */
+  --bottom-nav-height: 128px;
+
   /* The smallest thing a finger can reliably hit. WCAG 2.5.5. */
   --tap-target: 44px;
+
+  /* Stacking order, in one place. Every z-index in the project comes from
+     this list, so you never have to guess what a 9999 somewhere was for. */
+  --z-bottom-nav: 100;
+  --z-topbar: 200;
+  --z-menu: 300;
 
   --transition: 150ms ease;
 }

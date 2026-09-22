@@ -1,0 +1,132 @@
+/* The floating bar at the bottom. Belongs to bottom-nav.php.
+
+   No hex values: everything comes from tokens.css. Mobile first, only
+   min-width queries on 480 / 640 / 900 / 1200. */
+
+/* ------------------------------------------------------------ bottom nav */
+
+/* Floats above the content instead of sticking to the edge. Only below
+   900px: above that the same five links sit in the topbar. */
+.bottom-nav {
+  position: fixed;
+  bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: var(--z-bottom-nav);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  gap: var(--space-xs);
+  width: calc(100% - var(--gutter) * 2);
+  max-width: 440px;
+
+  /* More room at the bottom than at the top: that is where the label of the
+     page you are on sits. */
+  padding: var(--space-sm) var(--space-sm) var(--space-lg);
+
+  border-radius: var(--radius-full);
+  background-color: var(--surface-2);
+  box-shadow: var(--shadow-md);
+  transform: translateX(-50%);
+}
+
+@media (min-width: 900px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+/* min-width keeps the tap target legal on a narrow phone, where 80% of a
+   fifth of the screen drops under 44px. */
+.bottom-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  width: 80%;
+  min-width: var(--tap-target);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.bottom-nav__item.is-active {
+  color: var(--text-heading);
+}
+
+/* The circle in the middle. Bigger than its own item and taken out of the
+   flow, so it rises above the bar instead of stretching it. It sits on the
+   wrapper and not on the link, which keeps the looks and the active state
+   two separate things. */
+.bottom-nav__item--accent {
+  position: relative;
+}
+
+.bottom-nav__item--accent .bottom-nav__icon-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  align-items: center;
+  justify-content: center;
+  width: 120%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background-image: var(--gradient-accent);
+  box-shadow: var(--shadow-md);
+  color: var(--text-on-accent);
+}
+
+.bottom-nav__item--accent .icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* The label is positioned against this wrapper, not against the whole item,
+   so it lands just under the icon and inside the pill. */
+.bottom-nav__icon-wrap {
+  position: relative;
+  display: flex;
+  transition: transform var(--transition);
+}
+
+.bottom-nav__item.is-active .bottom-nav__icon-wrap {
+  transform: translateY(-6px);
+}
+
+/* The circle sits higher and stays there on its own page: it is already the
+   loudest thing in the bar, so an extra hop says nothing. Both selectors,
+   because .is-active would otherwise win on specificity. */
+.bottom-nav__item--accent .bottom-nav__icon-wrap,
+.bottom-nav__item--accent.is-active .bottom-nav__icon-wrap {
+  transform: translate(-50%, calc(-50% - 16px));
+}
+
+.bottom-nav__icon-wrap .icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* Absolute, so showing it does not make the active item taller than the
+   rest and shove the whole row around. */
+.bottom-nav__label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  display: none;
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-2xs);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.bottom-nav__item.is-active .bottom-nav__label {
+  display: block;
+}
+
+@media (hover: hover) {
+  .bottom-nav__item:hover {
+    background-color: var(--accent-soft);
+    color: var(--text-heading);
+  }
+}

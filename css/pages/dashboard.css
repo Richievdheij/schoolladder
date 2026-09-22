@@ -1,0 +1,14 @@
+/* Alleen voor de homepage. head.php laadt dit bestand automatisch omdat daar
+   $page = 'dashboard' staat en dit bestand dashboard.css heet.
+
+   Alles hier begint met .dashboard, zodat je nooit per ongeluk een andere
+   pagina raakt. Dat is de hele afspraak. */
+
+.dashboard__hero {
+  background-image: var(--gradient-dark);
+  border: 1px solid var(--border-strong);
+}
+
+.dashboard__greeting {
+  font-size: var(--fs-h2);
+}
