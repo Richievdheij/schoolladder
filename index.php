@@ -25,8 +25,11 @@ $attendance = $dashboard['attendance'];
    next says "n.v.t.". */
 $dash = '–';
 
-$hasTrend = $position['trend'] !== null;
-$trendUp = $hasTrend && $position['trend'] >= 0;
+/* Nul is geen stijging: zonder dit onderscheid krijgt "niets verschoven" een
+   groene pijl omhoog. */
+$trendWay = $position['trend'] === null
+    ? null
+    : ($position['trend'] > 0 ? 'up' : ($position['trend'] < 0 ? 'down' : 'flat'));
 
 /* The lowest of the parts that have a standing at all. Without the filter a
    part nobody has looked at yet (level 0) would always come out lowest, and
@@ -126,21 +129,23 @@ $lessonStatus = [
 
                     <div class="dashboard__stat">
                         <span class="dashboard__stat-label">Trend</span>
-                        <strong class="dashboard__stat-value<?= $hasTrend ? ' dashboard__stat-value--' . ($trendUp ? 'up' : 'down') : ' dashboard__stat-value--none' ?>">
-                            <?php if ($hasTrend): ?>
-                                <?= icon($trendUp ? 'arrow-up-right' : 'trending-up') ?>
+                        <strong class="dashboard__stat-value dashboard__stat-value--<?= $trendWay ?? 'none' ?>">
+                            <?php if ($trendWay === 'up' || $trendWay === 'down'): ?>
+                                <?= icon($trendWay === 'up' ? 'arrow-up-right' : 'trending-up') ?>
                                 <?= delta($position['trend']) ?>
+                            <?php elseif ($trendWay === 'flat'): ?>
+                                <?= num(0) ?>
                             <?php else: ?>
                                 <?= $dash ?>
                             <?php endif; ?>
                         </strong>
                         <span class="dashboard__stat-meta">
-                            <?php if (!$hasTrend): ?>
+                            <?php if ($trendWay === null): ?>
                                 nog geen eerdere meting
-                            <?php elseif (($position['trendSince'] ?? null) !== null): ?>
-                                plekken sinds <?= e($position['trendSince']) ?>
+                            <?php elseif ($trendWay === 'flat'): ?>
+                                onveranderd sinds <?= e($position['trendSince'] ?? '') ?>
                             <?php else: ?>
-                                plekken verschoven
+                                plekken sinds <?= e($position['trendSince'] ?? '') ?>
                             <?php endif; ?>
                         </span>
                     </div>
@@ -532,8 +537,11 @@ $lessonStatus = [
                         'Zodra er iets van je wordt verwacht, staat het hier.'
                     ) ?>
                 <?php else: ?>
+                    <?php /* Geen oordeel over hoe je ervoor staat: dat hangt af van
+                             gegevens die deze kaart niet kent, en "je bent op schema"
+                             is onzin voor iemand die achterloopt. */ ?>
                     <p class="dashboard__actions-lead">
-                        Je bent op schema. Dit levert vandaag het meeste op.
+                        Dit levert op dit moment het meeste op.
                     </p>
 
                     <ul class="dashboard__steps">

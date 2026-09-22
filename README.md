@@ -69,7 +69,10 @@ Een pagina die nog niet bestaat toont dan het dashboard in plaats van een 404.
 2. Maak een database `schoolladder` aan met collatie `utf8mb4_general_ci`.
 3. Importeer eerst `database.sql` en daarna `database-subjects.sql`. Die volgorde
    telt: de eerste maakt het schema, de tweede vult de 356 officiële schoolvakken.
-4. Controleer de gegevens bovenin `includes/config.php`.
+4. Wil je het dashboard met gevulde gegevens zien, importeer dan ook
+   `database-demo.sql` en log in als `noa@demo.test` of `sem@demo.test` met wachtwoord
+   `demo1234`.
+5. Controleer de gegevens bovenin `includes/config.php`.
 
 Waar die bestanden vandaan komen en hoe je een tabel toevoegt staat in
 [`docs/data.md`](docs/data.md).

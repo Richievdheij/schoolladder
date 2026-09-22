@@ -20,6 +20,14 @@ const DEBUG = true;
 ini_set('display_errors', DEBUG ? '1' : '0');
 error_reporting(E_ALL);
 
+/* PHP draait standaard in UTC en MySQL in de systeemtijd. Dat scheelt hier
+   twee uur, en dan staat een les van 10:45 volgens de klok van de pagina nog
+   te beginnen terwijl hij al voorbij is. Allebei op Amsterdam, en db() zet de
+   verbinding straks op dezelfde stand. */
+const TIMEZONE = 'Europe/Amsterdam';
+
+date_default_timezone_set(TIMEZONE);
+
 /** Escape a value before printing it in HTML. */
 function e(?string $value): string
 {
@@ -140,6 +148,10 @@ function db(): PDO
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]
         );
+
+        /* Zet de verbinding op dezelfde tijd als PHP. De verschuiving wordt nu
+           berekend, dus in de winter komt er vanzelf +01:00 uit. */
+        $pdo->exec("SET time_zone = '" . (new DateTimeImmutable())->format('P') . "'");
     }
 
     return $pdo;

@@ -6,39 +6,30 @@ tabel vandaan kwam of welke versie erin zit.
 
 ## De database opbouwen
 
-Twee bestanden, in deze volgorde:
+Open phpMyAdmin, klik op de database `schoolladder` en ga naar het tabblad
+**Importeren**. Importeer twee bestanden, in deze volgorde:
 
-```bash
-mysql -h 127.0.0.1 -u root schoolladder < database.sql
-mysql -h 127.0.0.1 -u root schoolladder < database-subjects.sql
-```
+1. **`database.sql`** — alle tabellen, plus de lijsten die voor elke school hetzelfde
+   zijn: puntencategorieën, zones en badges.
+2. **`database-subjects.sql`** — de 356 officiële schoolvakken.
 
-`database.sql` is het hele schema plus de vaste lijsten die niet van een school afhangen:
-puntencategorieën, zones en badges. `database-subjects.sql` zet de 356 officiële
-schoolvakken erin.
+De volgorde telt: het tweede bestand vult tabellen die het eerste aanmaakt.
 
-**Waarom twee bestanden?** Omdat ze een andere levensloop hebben. Het schema verandert
-wanneer jij iets bouwt; de vakkenlijst verandert wanneer Edustandaard een nieuw schooljaar
-vaststelt. Zou de vakkendata in `database.sql` staan, dan gooit elke schema-export die
-weer weg. Andersom net zo.
+Wil je het dashboard met gevulde gegevens zien, importeer dan als derde
+**`database-demo.sql`**. Dat zet twee testleerlingen neer met rooster, cijfers, punten en
+aanwezigheid. Inloggen met `noa@demo.test` of `sem@demo.test`, wachtwoord `demo1234`.
+Dat bestand hoort niet op een echte installatie.
+
+**Waarom twee bestanden?** Omdat ze niet tegelijk veranderen. Het schema verandert als je
+zelf iets bouwt, de vakkenlijst alleen als Edustandaard een nieuw schooljaar vaststelt.
+In één bestand zou het bijwerken van het één het ander overschrijven.
 
 ### Een tabel toevoegen
 
-`database.sql` houdt de phpMyAdmin-indeling aan: eerst alle `CREATE TABLE` op
-alfabetische volgorde, dan de vaste lijsten, en daarna drie blokken met de sleutels, de
-`AUTO_INCREMENT` en de foreign keys. Een tabel toevoegen betekent dus op vier plekken
-iets bijzetten, niet alleen bovenaan.
-
-Exporteer je liever opnieuw uit phpMyAdmin, dan blijft die indeling vanzelf staan — maar
-let op dat je de vakken er niet bij exporteert, want die horen in `database-subjects.sql`.
-
-Controleer daarna of het bestand een lege database nog echt opbouwt:
-
-```bash
-mysql -h 127.0.0.1 -u root -e "DROP DATABASE schoolladder; CREATE DATABASE schoolladder CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-mysql -h 127.0.0.1 -u root schoolladder < database.sql
-mysql -h 127.0.0.1 -u root schoolladder < database-subjects.sql
-```
+Maak de tabel gewoon in phpMyAdmin en exporteer de database daarna opnieuw naar
+`database.sql`. Kies bij **Exporteren** de methode *Aangepast* en zet de gegevens alleen
+aan voor `users`, `point_categories`, `zones` en `badges` — de vakken horen in het andere
+bestand, anders staan ze straks dubbel.
 
 ## Vakken
 
@@ -66,7 +57,7 @@ vak (profielvak, beroepsgericht keuzevak, …), de roepnaam en de wettelijke vak
 Dát is de tabel die de vraag "mag een havoleerling dit vak kiezen" beantwoordt — staat er
 geen havo-regel bij, dan wordt het vak daar niet aangeboden.
 
-### Drie dingen om te weten
+### Vier dingen om te weten
 
 - **Vaknaam en prefix zijn geen sleutel.** De officiële lijst bevat dubbelen: `it` is
   zowel Italiaans als informatietechnologie, en een paar vmbo-prefixes dragen twee namen.
@@ -85,12 +76,12 @@ geen havo-regel bij, dan wordt het vak daar niet aangeboden.
 
 ### Een nieuw schooljaar
 
-`database-subjects.sql` is een momentopname van 2026-2027 en is herhaalbaar te
-importeren: hij leegt eerst wat hij de vorige keer schreef en laat het schema de tweede
-keer met rust. Stelt Edustandaard een nieuwe lijst vast, dan moet de xlsx opnieuw worden
-omgezet. Het omzetscript is er niet meer — voor dit project is die lijst klaar — dus dat
-is dan handwerk of een nieuw scriptje. De kolomindeling van het werkblad staat hieronder,
-zodat je niet opnieuw hoeft uit te zoeken wat waar staat:
+`database-subjects.sql` is een momentopname van 2026-2027. Je mag hem opnieuw
+importeren: hij leegt eerst wat hij de vorige keer schreef.
+
+Komt er een nieuw schooljaar uit, dan moet de xlsx opnieuw worden omgezet. Voor dit
+project is de lijst klaar, dus dat omzetscript staat er niet meer in. Mocht het ooit
+nodig zijn: dit is hoe het werkblad is ingedeeld.
 
 | Kolom | Wat |
 | --- | --- |
