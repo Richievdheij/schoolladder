@@ -1,0 +1,135 @@
+/* The shared building blocks: things more than one component uses. What
+   belongs to exactly one component lives in css/components/.
+
+   No hex values: everything comes from tokens.css. Mobile first, only
+   min-width queries on 480 / 640 / 900 / 1200. */
+
+/* ----------------------------------------------------------------- icons */
+
+/* The files in images/icons carry stroke="currentColor", so an icon follows
+   the colour of the text beside it. Size has to be set here, because the
+   height:auto in base.css beats the width and height on the <svg> itself. */
+.icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* --------------------------------------------------------------- avatar */
+
+/* The circle with someone's initials in it. The menu panel and the dashboard
+   hero both use it, which is why it sits here and not in navbar.css. */
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background-image: var(--gradient-accent);
+  color: var(--text-on-accent);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label);
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------- empty state */
+
+/* What a card shows when it has nothing in it yet. Built by emptyState() in
+   config.php, so every page gets the same thing without copying markup.
+
+   Quiet on purpose: an empty card is the normal state of a new account, not
+   an error, and it should not shout louder than a card that does have
+   something to say. */
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-sm);
+  padding-block: var(--space-xl);
+  text-align: center;
+}
+
+.empty-state__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-soft);
+  color: var(--text-muted);
+}
+
+.empty-state__title {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.empty-state__text {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ------------------------------------------------------- page and cards */
+
+/* Two places a title can sit, and that is the whole vocabulary:
+ *
+ *   .page__head   above the content, the normal case
+ *   .card__head  inside a card, for a dashboard-style block
+ *
+ * Wrap content in .container for the gutters and in .section for the vertical
+ * rhythm; both already live in base.css. */
+
+.page__head {
+  display: grid;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+/* The border is what separates one card from the next where they touch, and
+   it keeps a card from dissolving into the page background on a dark theme.
+   Subtle on purpose: it should read as an edge, not as a frame. */
+.card {
+  padding: var(--space-xl);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface-1);
+}
+
+/* A card spaces its own children, so a title never ends up stuck against the
+   text below it and there is no extra class to remember. */
+.card > * + * {
+  margin-top: var(--space-lg);
+}
+
+/* baseline, not center: the title and the small text beside it line up on
+   the text itself, not on the boxes around it. */
+.card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+/* A card title is a card title, not a page title. */
+.card__head h2 {
+  font-size: var(--fs-h4);
+}
+
+.card__meta {
+  flex: none;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.page {
+  /* Keep the last line clear of the bottom nav, plus the home indicator. */
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 900px) {
+  .page {
+    padding-bottom: 0;
+  }
+}

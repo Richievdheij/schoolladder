@@ -1,0 +1,911 @@
+/* Only for the homepage: header.php loads this file because $page is
+   'dashboard' and this file is called dashboard.css.
+
+   Everything starts with .dashboard so no other page can be hit by accident.
+   Mobile first: what follows is the phone layout, columns come in the media
+   queries at the bottom. */
+
+/* ------------------------------------------------------------------ grid */
+
+.dashboard__grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* ------------------------------------------------------- shared pieces */
+
+.dashboard__more {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* .icon is 24px, too big next to text of 12 or 14px. */
+.dashboard__more .icon,
+.dashboard__lesson-meta .icon,
+.dashboard__badge .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* -------------------------------------------------------------- the hero */
+
+.dashboard__hero {
+  background-image: var(--gradient-dark);
+  border: 1px solid var(--border-strong);
+}
+
+.dashboard__greeting {
+  font-size: var(--fs-h2);
+}
+
+.dashboard__hero-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.dashboard__hero-intro {
+  margin-top: var(--space-sm);
+  max-width: 46ch;
+}
+
+.dashboard__updated {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dashboard__updated .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+/* Three tiles, two to a row, so the last one would sit alone on half a line.
+   From 640px all three fit and this rule is turned off again. */
+.dashboard__stat:last-child {
+  grid-column: 1 / -1;
+}
+
+.dashboard__stat {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-overlay);
+}
+
+.dashboard__stat-label {
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__stat-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--text-heading);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-tight);
+}
+
+.dashboard__stat-value .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.dashboard__stat-value--up {
+  color: var(--status-success-text);
+}
+
+.dashboard__stat-value--down {
+  color: var(--status-error-text);
+}
+
+/* A value that is not there yet should not shout as loud as one that is. */
+.dashboard__stat-value--none,
+.dashboard__subject-average--none {
+  color: var(--text-muted);
+}
+
+.dashboard__stat-meta {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* --------------------------------------------------------- zone check */
+
+.dashboard__zone {
+  display: grid;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: 1px solid var(--status-warning);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-overlay);
+}
+
+.dashboard__zone-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.dashboard__zone-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-full);
+  background-color: var(--surface-overlay-strong);
+  color: var(--status-warning-text);
+}
+
+.dashboard__zone-title {
+  font-size: var(--fs-h4);
+  color: var(--status-warning-text);
+}
+
+.dashboard__zone-meta {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ------------------------------------------------------------- today */
+
+.dashboard__timeline {
+  padding-left: 0;
+  list-style: none;
+}
+
+/* The time column has a fixed width because the line through the dots is
+   aligned to that measure; a column that grows would jog the line per row. */
+.dashboard__lesson {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem 10px 1fr;
+  align-items: center;
+  gap: var(--space-xs) var(--space-md);
+  padding-block: var(--space-md);
+}
+
+/* Trimmed on the first and last row so it does not run out of the card. */
+.dashboard__lesson::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(3.5rem + var(--space-md) + 4px);
+  width: 2px;
+  background-color: var(--border-subtle);
+}
+
+.dashboard__lesson:first-child::before {
+  top: 50%;
+}
+
+.dashboard__lesson:last-child::before {
+  bottom: 50%;
+}
+
+.dashboard__lesson-time {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__lesson-marker {
+  position: relative; /* above the line */
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--border-strong);
+}
+
+.dashboard__lesson--done .dashboard__lesson-marker {
+  background-color: var(--status-success);
+}
+
+.dashboard__lesson--now .dashboard__lesson-marker {
+  background-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.dashboard__lesson-body {
+  display: grid;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.dashboard__lesson-subject {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+/* Softened with colour and not with opacity, which would also drop the
+   contrast below what it has to be. */
+.dashboard__lesson--done .dashboard__lesson-subject {
+  color: var(--text-body);
+  font-weight: var(--fw-regular);
+}
+
+.dashboard__lesson-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* On a phone the status drops below the lesson, or a subject like
+   "Lichamelijke opvoeding" is left with a column of nothing. */
+.dashboard__lesson-status {
+  grid-column: 3;
+  justify-self: start;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dashboard__lesson--now .dashboard__lesson-status {
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: var(--fw-semibold);
+}
+
+/* ------------------------------------------------- what you are judged on */
+
+.dashboard__levels {
+  display: grid;
+  gap: var(--space-lg);
+  padding-left: 0;
+  list-style: none;
+}
+
+.dashboard__level {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.dashboard__level-label {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__level-status {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__level-status--strong {
+  color: var(--text-heading);
+}
+
+.dashboard__level-status--ok {
+  color: var(--text-body);
+}
+
+.dashboard__level-status--warn {
+  color: var(--status-warning-text);
+}
+
+.dashboard__level-status--weak {
+  color: var(--status-error-text);
+}
+
+.dashboard__level-status--none {
+  color: var(--text-muted);
+  font-weight: var(--fw-regular);
+}
+
+/* Separate steps and not one bar: this is a band, not a measurement. The gap
+   has to be this wide, because at two pixels a full meter reads as a solid
+   bar again. --steps comes from PHP so both sides agree on the scale. */
+.dashboard__meter {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(var(--steps, 4), 1fr);
+  gap: var(--space-xs);
+}
+
+.dashboard__meter-step {
+  height: 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-soft);
+}
+
+.dashboard__meter-step--strong {
+  background-color: var(--brand-lavender);
+}
+
+.dashboard__meter-step--ok {
+  background-color: var(--brand-purple);
+}
+
+.dashboard__meter-step--warn {
+  background-color: var(--status-warning);
+}
+
+.dashboard__meter-step--weak {
+  background-color: var(--status-error);
+}
+
+/* --------------------------------------------------------- your standing */
+
+.dashboard__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs);
+  border-radius: var(--radius-full);
+  background-color: var(--surface-overlay);
+}
+
+.dashboard__tab {
+  flex: 1 1 auto;
+  padding-inline: var(--space-md);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    color var(--transition);
+}
+
+.dashboard__tab.is-active {
+  background-image: var(--gradient-accent);
+  color: var(--text-on-accent);
+}
+
+.dashboard__panel {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* Without this the display: grid above beats the hidden attribute that the
+   JavaScript sets, and all three periods show at once. */
+.dashboard__panel[hidden] {
+  display: none;
+}
+
+/* Columns may shrink to nothing but never grow past 5rem, and they sit
+   centred. At 1fr each, a series of three measurements would smear three
+   bars across the whole card with gaps that look broken. */
+.dashboard__chart {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 5rem);
+  justify-content: center;
+  gap: var(--space-xs);
+  padding-left: 0;
+  list-style: none;
+}
+
+/* The middle row needs a fixed height for the bar's percentage to resolve
+   against. Without it every bar falls flat. */
+.dashboard__chart-col {
+  display: grid;
+  grid-template-rows: auto 120px auto;
+  gap: var(--space-xs);
+  justify-items: center;
+}
+
+.dashboard__chart-points {
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__chart-bar {
+  align-self: end;
+  width: 100%;
+  max-width: 28px;
+  height: var(--height, 0%);
+  min-height: 4px;
+  border-radius: var(--radius-sm);
+  background-color: var(--brand-purple);
+}
+
+.dashboard__chart-day {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
+.dashboard__chart-col--today .dashboard__chart-bar {
+  background-color: var(--brand-lavender);
+}
+
+.dashboard__chart-col--today .dashboard__chart-points,
+.dashboard__chart-col--today .dashboard__chart-day {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__chart-note {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ------------------------------------------- recently marked and subjects */
+
+.dashboard__list {
+  display: grid;
+  gap: var(--space-sm);
+  padding-left: 0;
+  list-style: none;
+}
+
+.dashboard__grade + .dashboard__grade,
+.dashboard__subject + .dashboard__subject {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dashboard__grade {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.dashboard__grade-mark {
+  display: grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__grade-mark--pass {
+  background-color: var(--accent-soft);
+  color: var(--text-heading);
+}
+
+.dashboard__grade-mark--fail {
+  border-color: var(--status-error);
+  background-color: var(--surface-overlay-strong);
+  color: var(--status-error-text);
+}
+
+.dashboard__grade-body {
+  display: grid;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.dashboard__grade-subject {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__grade-meta {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dashboard__grade-type {
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  background-color: var(--accent-soft);
+  color: var(--text-muted);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.dashboard__subject {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: var(--space-md);
+}
+
+.dashboard__subject-name {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__subject-average {
+  color: var(--text-heading);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__subject-trend {
+  width: 1.25rem;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.dashboard__subject-trend--up {
+  color: var(--status-success-text);
+}
+
+.dashboard__subject-trend--down {
+  color: var(--status-error-text);
+}
+
+.dashboard__levels-note,
+.dashboard__subjects-note {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.dashboard__levels-note strong {
+  color: var(--text-heading);
+}
+
+/* --------------------------------------------------------------- ladder */
+
+.dashboard__ranks {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-left: 0;
+  list-style: none;
+}
+
+/* The transparent border is on the ordinary rows too, or your own row is two
+   pixels taller than the rest and the whole list jogs. */
+.dashboard__rank {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr auto auto;
+  align-items: center;
+  gap: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-sm);
+}
+
+.dashboard__rank-pos {
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.dashboard__rank-name {
+  min-width: 0;
+}
+
+.dashboard__rank-class {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dashboard__rank-move {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dashboard__rank-move--up {
+  color: var(--status-success-text);
+}
+
+.dashboard__rank-move--down {
+  color: var(--status-error-text);
+}
+
+/* The only row with a background, so you find yourself at a glance. */
+.dashboard__rank--me {
+  border-color: var(--border-strong);
+  background-color: var(--accent-soft);
+}
+
+.dashboard__rank--me .dashboard__rank-pos,
+.dashboard__rank--me .dashboard__rank-name {
+  color: var(--text-heading);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__rank-you {
+  display: inline-block;
+  padding-inline: var(--space-sm);
+  border-radius: var(--radius-full);
+  background-image: var(--gradient-accent);
+  color: var(--text-on-accent);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------- attendance */
+
+.dashboard__streak {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.dashboard__streak-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-full);
+  background-color: var(--surface-overlay-strong);
+  color: var(--status-warning-text);
+}
+
+.dashboard__streak-value {
+  color: var(--text-heading);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-tight);
+}
+
+.dashboard__streak-label {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.dashboard__figures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  padding-left: 0;
+  list-style: none;
+}
+
+.dashboard__figures li {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-overlay);
+  text-align: center;
+}
+
+.dashboard__figures strong {
+  color: var(--text-heading);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+}
+
+.dashboard__figures span {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.dashboard__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-left: 0;
+  list-style: none;
+}
+
+.dashboard__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-heading);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+.dashboard__badge--locked {
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------- what now */
+
+.dashboard__actions-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  align-self: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-full);
+  background-image: var(--gradient-accent);
+  color: var(--text-on-accent);
+}
+
+.dashboard__steps {
+  display: grid;
+  gap: var(--space-sm);
+  padding-left: 0;
+  list-style: none;
+}
+
+.dashboard__step {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+  height: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-overlay);
+  text-decoration: none;
+  transition:
+    border-color var(--transition),
+    background-color var(--transition);
+}
+
+.dashboard__step-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-soft);
+  color: var(--text-muted);
+}
+
+.dashboard__step-body {
+  display: grid;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.dashboard__step-title {
+  color: var(--text-heading);
+}
+
+.dashboard__step-text {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.dashboard__step-chevron {
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------ pointers only */
+
+/* Behind (hover: hover), because on a touchscreen a hover state stays stuck
+   on whatever you tapped last. */
+@media (hover: hover) {
+  .dashboard__more:hover {
+    color: var(--text-heading);
+  }
+
+  .dashboard__more:hover .icon {
+    translate: 2px 0;
+  }
+
+  .dashboard__tab:not(.is-active):hover {
+    color: var(--text-heading);
+  }
+
+  .dashboard__step:hover {
+    border-color: var(--border-strong);
+    background-color: var(--accent-soft);
+    color: inherit;
+  }
+
+  .dashboard__step:hover .dashboard__step-chevron {
+    color: var(--text-heading);
+    translate: 2px 0;
+  }
+}
+
+.dashboard__more .icon,
+.dashboard__step-chevron {
+  transition: translate var(--transition);
+}
+
+/* ------------------------------------------------------------ 480 px + */
+
+@media (min-width: 480px) {
+  .dashboard__lesson {
+    grid-template-columns: 3.5rem 10px 1fr auto;
+  }
+
+  .dashboard__lesson-status {
+    grid-row: 1;
+    grid-column: 4;
+    justify-self: end;
+  }
+}
+
+/* ------------------------------------------------------------ 640 px + */
+
+@media (min-width: 640px) {
+  .dashboard__grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-xl);
+  }
+
+  /* Full width by default; what may be narrower says so below, and those
+     rules come after this one on purpose. */
+  .dashboard__grid > * {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard__attendance,
+  .dashboard__assessment,
+  .dashboard__standing,
+  .dashboard__recent {
+    grid-column: span 6;
+  }
+
+  .dashboard__stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard__stat:last-child {
+    grid-column: auto;
+  }
+}
+
+/* ------------------------------------------------------------ 900 px + */
+
+/* The order in the HTML is chosen so these rows fill by themselves: hero +
+   ladder, today + attendance, judged-on + standing, recent + subjects, what
+   now underneath. So no grid-auto-flow: dense is needed, and a screen reader
+   reads the page in the order you see it. */
+@media (min-width: 900px) {
+  .dashboard__hero,
+  .dashboard__today {
+    grid-column: span 8;
+  }
+
+  .dashboard__ladder,
+  .dashboard__attendance {
+    grid-column: span 4;
+  }
+
+  .dashboard__assessment,
+  .dashboard__standing,
+  .dashboard__recent,
+  .dashboard__subjects {
+    grid-column: span 6;
+  }
+
+  .dashboard__steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

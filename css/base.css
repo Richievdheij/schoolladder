@@ -30,12 +30,24 @@ video {
     height: auto;
 }
 
+/* Keep these at 16px or larger. Below that iOS zooms the whole page in the
+   moment the field gets focus, and it never zooms back out. */
 button,
 input,
 select,
 textarea {
     font: inherit;
     color: inherit;
+}
+
+/* Anything you tap needs room for a fingertip. Links in a sentence are left
+   out on purpose: they belong in the text flow, not in a 44px box. */
+button,
+select,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  min-height: var(--tap-target);
 }
 
 html {
