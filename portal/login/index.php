@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
             </div>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
-        <form action="" method="post" style="display: flex; flex-direction: column;">
+        <form action="" method="post">
             <?php if (!empty($errors)): ?>
                 <div class="error">
                     <?php foreach ($errors as $error): ?>
