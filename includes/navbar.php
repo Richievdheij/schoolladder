@@ -64,12 +64,27 @@ $logo = BASE_URL . 'images/schoolladder-logo-trimmed.png';
             </button>
         </div>
 
+        <?php
+        /* Role and class can each be missing on their own, so the line is
+           built from whatever is there instead of "Leerling · klas " with a
+           gap behind it. */
+        $profileMeta = array_filter([
+            $currentUser['role'],
+            $currentUser['class'] === null ? null : 'klas ' . $currentUser['class'],
+        ]);
+        ?>
         <div class="profile">
-            <span class="avatar" aria-hidden="true"><?= e($currentUser['initials']) ?></span>
+            <?php if ($currentUser['initials'] !== null): ?>
+                <span class="avatar" aria-hidden="true"><?= e($currentUser['initials']) ?></span>
+            <?php endif; ?>
             <span class="profile__text">
-                <strong class="profile__name"><?= e($currentUser['name']) ?></strong>
+                <strong class="profile__name">
+                    <?= e($currentUser['name'] ?? 'Niet ingelogd') ?>
+                </strong>
                 <span class="profile__meta">
-                    <?= e($currentUser['role']) ?> &middot; klas <?= e($currentUser['class']) ?>
+                    <?= $profileMeta === []
+                        ? 'Log in om je gegevens te zien'
+                        : e(implode(' · ', $profileMeta)) ?>
                 </span>
             </span>
         </div>

@@ -2,6 +2,50 @@
 
 Schoolladder is een dystopisch onderwijssysteem. Dit is een schoolproject voor CMGT.
 
+## Punten zijn niet van de leerling
+
+Lees dit voordat je een pagina bouwt, want het bepaalt wat erop mag staan.
+
+Het systeem rekent achter de schermen een score uit en rangschikt daarmee alle
+leerlingen. **Een leerling krijgt die score nooit te zien** — zijn eigen niet, en die
+van een ander al helemaal niet. Dat is geen detail dat we later invullen, het is waar
+het concept op staat: je wordt beoordeeld en je mag de som er niet bij zien.
+
+Wat een leerling wél mag zien:
+
+| Wel                                        | Niet                                |
+| ------------------------------------------ | ----------------------------------- |
+| Zijn positie (`#12 van 64`) en zijn zone   | Zijn puntentotaal                   |
+| Hoeveel plekken hij of iemand anders steeg | Andermans punten                    |
+| Cijfers, want die staan los van de score   | Punten per cijfer of per vak        |
+| Een band per onderdeel: _Sterk_, _Let op_  | Een waarde of maximum per onderdeel |
+
+Docenten zien de rauwe score wel, maar dat is een andere pagina met een eigen
+databestand. Smokkel het hier dus niet binnen "voor later": staat er een puntentotaal
+in een leerlingpagina, dan is dat een bug.
+
+## Lege gegevens horen erbij
+
+Een echte database heeft nieuwe leerlingen, lege weken en vakken waar nog niets van is
+nagekeken. Elk blok gaat er daarom vanuit dat zijn gegevens kunnen ontbreken, en de
+afspraak daarvoor is kort:
+
+- **`null` betekent "nog niet bekend"**, een **lege array** betekent "niets te tonen".
+  Nooit `0` of `"-"` om iets afwezigs aan te duiden, want de opmaak moet "nul lessen
+  vandaag" kunnen onderscheiden van "het rooster is niet geladen".
+- **Opmaken doet de template**, niet het databestand. Het streepje dat je op het scherm
+  ziet staat in `index.php`, niet in de data.
+- **Een kaart zonder gegevens blijft staan** met een korte melding erin, gemaakt met
+  `emptyState()`. Zo verspringt de layout niet zodra er data binnenkomt, en zie je als
+  nieuwe leerling wat er nog gaat komen. Alleen de zonecontrole valt wég als er niets te
+  melden is: een waarschuwing die zegt dat er niets aan de hand is, is er geen.
+
+Dat is geen randgeval maar de normale toestand: `includes/data/dashboard.php` leest de
+database en die is nog leeg, dus wie nu de homepage opent ziet precies deze lege
+structuur. Eén `try` om alle queries heen zorgt dat een database die plat ligt of een
+schema dat nog niet is geïmporteerd hetzelfde oplevert — een lege pagina, geen
+foutmelding.
+
 ## Stack
 
 Alleen PHP, HTML, CSS, JavaScript en MySQL. Geen framework, geen build-stap, geen npm,
@@ -23,7 +67,15 @@ Een pagina die nog niet bestaat toont dan het dashboard in plaats van een 404.
 
 1. Start MySQL in Herd en open phpMyAdmin.
 2. Maak een database `schoolladder` aan met collatie `utf8mb4_general_ci`.
-3. Controleer de gegevens bovenin `includes/config.php`.
+3. Importeer eerst `database.sql` en daarna `database-subjects.sql`. Die volgorde
+   telt: de eerste maakt het schema, de tweede vult de 356 officiële schoolvakken.
+4. Wil je het dashboard met gevulde gegevens zien, importeer dan ook
+   `database-demo.sql` en log in als `noa@demo.test` of `sem@demo.test` met wachtwoord
+   `demo1234`.
+5. Controleer de gegevens bovenin `includes/config.php`.
+
+Waar die bestanden vandaan komen en hoe je een tabel toevoegt staat in
+[`docs/data.md`](docs/data.md).
 
 Gebruik de `db()` helper. Die verbindt pas bij de eerste aanroep, dus een pagina zonder
 database werkt ook als MySQL niet draait. Waarden uit een formulier of URL gaan **nooit**
@@ -41,7 +93,7 @@ schoolladder/
 ├── index.php          de homepage
 ├── <pagina>/          elke pagina is een map met een index.php erin
 ├── includes/
-│   ├── config.php     instellingen, database, helpers (e, db, icon)
+│   ├── config.php     instellingen, database, helpers (e, db, icon, num, delta, emptyState)
 │   ├── data/          vaste lijsten, zonder HTML
 │   └── *.php          de herbruikbare stukken opmaak
 ├── css/
@@ -78,13 +130,13 @@ zelf; dit zijn de regels eromheen.
 
 ## CSS
 
-| Bestand                  | Waarvoor                                                                           |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| `tokens.css`             | Kleuren, fonts, maten. Het enige bestand met hexcodes.                             |
-| `base.css`               | Element-defaults en de layouthelpers: `.container`, `.section`, `.stack`, `.grid`. |
-| `components.css`         | Gedeelde bouwstenen die meerdere componenten gebruiken: `.icon`, `.card`, `.page__head`. |
-| `css/components/<naam>.css` | De stijl van één component. De naam is gelijk aan het PHP-bestand in `includes/`. |
-| `css/pages/<pagina>.css` | Alles wat maar op één pagina voorkomt.                                             |
+| Bestand                     | Waarvoor                                                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `tokens.css`                | Kleuren, fonts, maten. Het enige bestand met hexcodes.                                                              |
+| `base.css`                  | Element-defaults en de layouthelpers: `.container`, `.section`, `.stack`, `.grid`.                                  |
+| `components.css`            | Gedeelde bouwstenen die meerdere componenten gebruiken: `.icon`, `.card`, `.page__head`, `.avatar`, `.empty-state`. |
+| `css/components/<naam>.css` | De stijl van één component. De naam is gelijk aan het PHP-bestand in `includes/`.                                   |
+| `css/pages/<pagina>.css`    | Alles wat maar op één pagina voorkomt.                                                                              |
 
 Een component heeft dus twee bestanden met dezelfde naam: `includes/navbar.php` en
 `css/components/navbar.css`. Zoek je waar iets gestyled wordt, dan weet je het pad al.
@@ -156,6 +208,9 @@ aan staat.
 
 ## Goed om te weten
 
+- **Getallen gaan door `num()`**, zodat 1248 overal `1.248` wordt en 8.4 overal `8,4`.
+  Voor een plus- of minteken is er `delta()`: die geeft `+34` en `−18` terug, met een
+  echt minteken en niet met een streepje.
 - **Zonder JavaScript opent het menupaneel niet.** De links staan wel gewoon in de HTML.
   De uitklapsectie erin is een `<details>` en werkt dus wél zonder JS.
 - Het paneel vult het hele scherm, dus er is geen overlay nodig. De focus blijft erin
