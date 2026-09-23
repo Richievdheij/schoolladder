@@ -6,10 +6,11 @@ $page = 'grades';
 
 require __DIR__ . '/../includes/config.php';
 require __DIR__ . '/../includes/data/user.php';
+require __DIR__ . '/../includes/data/subjects.php';
 
-// All grades of this student with the subject's name and icon, newest first.
+// All grades of this student with the subject's name and abbreviation, newest first.
 $stmt = db()->prepare(
-    'SELECT g.type, g.weight, g.grade, g.created_at, s.name AS subject_name, s.icon
+    'SELECT g.type, g.weight, g.grade, g.created_at, s.name AS subject_name, s.abbreviation
      FROM grades g
      JOIN subjects s ON s.id = g.subject_id
      WHERE g.student_id = :student_id
@@ -26,7 +27,7 @@ foreach ($stmt->fetchAll() as $row) {
     $row['weight'] = (float) $row['weight'];
 
     $grades[] = $row;
-    $bySubject[$row['subject_name']]['icon'] = $row['icon'];
+    $bySubject[$row['subject_name']]['icon'] = subjectIcon($row['abbreviation']);
     $bySubject[$row['subject_name']]['grades'][] = $row;
 }
 
