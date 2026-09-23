@@ -1,7 +1,7 @@
 <?php
 
-$pageTitle = 'Ranking page';
-require_once '../includes/config.php';
+$page = 'ranking';
+require_once __DIR__ . '/../includes/config.php';
 /** @var mysqli $pdo */
 
 //give students points, year_group and class_id.
@@ -15,6 +15,8 @@ require_once '../includes/config.php';
 <?php require __DIR__ . '/../includes/header.php'; ?>
     <body>
 
+    <?php require __DIR__ . '/../includes/navbar.php'; ?>
+
     <main>
 
         <div class="navy-space" style="background-color: var(--surface-page);">
@@ -26,12 +28,9 @@ require_once '../includes/config.php';
             <p>Bekijk de stand in jouw klas, jaarlaag en school. Zie wat je wint of verliest per positie.</p>
 
             <div class="row-containers">
-                <div id="2nd-surface" class="container" style="background-color: var(--surface-band);">
+                <div id="second-surface" class="container" style="background-color: var(--surface-band);">
                     <p><strong>Positie</strong></p>
                     <h4>#10</h4>
-                    <!--                <h4>--><?php
-                    //                echo $position;
-                    //                ?><!--</h4>-->
                     <p>van 26 leerlingen</p>
                 </div>
                 <div class="container" style="background-color: var(--surface-band);">
@@ -51,14 +50,7 @@ require_once '../includes/config.php';
         </div>
 
         <section id="ranking-filters" class="">
-            <!--will need to use onclick later to sort between class, year and school and change the content. I placed something from another project for now-->
-            <button class="filter-button" style="background-color: var(--brand-violet)"
-                    onclick="changeContent('productImage', (element) => {element.src = 'images/shake.gif';});
-                    changeContent('sensor-explanation', (element) => {
-                        element.textContent = 'U activeert de Handycaller door te schudden. Deze stuurt vervolgens een signaal ' +
-                        'naar een medewerker via bluetooth waarin staat dat u hulp nodig hebt in een bepaalde afdeling.';
-                    });"> Klas
-            </button>
+            <button class="filter-button" style="background-color: var(--brand-violet)">Klas</button>
             <button class="filter-button" style="background-color: var(--brand-violet)">Jaarlaag</button>
             <button class="filter-button" style="background-color: var(--brand-violet)">School</button>
         </section>
@@ -70,8 +62,6 @@ require_once '../includes/config.php';
 
             <h3>Topselectie</h3>
             <p>Klas 4A</p>
-
-            <!--als growth + is, moet het groen zijn, als growth - is moet het rood zijn-->
 
             <div class="ranking-row">
                 <div>
@@ -110,8 +100,10 @@ require_once '../includes/config.php';
 
     </main>
 
-    <?php require __DIR__ . '/../includes/footer.php'; ?>
+    <?php require __DIR__ . '/../includes/bottom-nav.php'; ?>
+    <script src="<?= BASE_URL ?>js/navbar.js"></script>
     <script src="<?= BASE_URL ?>js/ranking.js"></script>
+    <script src="<?= BASE_URL ?>js/main.js"></script>
 
     </body>
-    </html><?php
+    </html>

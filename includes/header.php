@@ -50,6 +50,10 @@ $isPortal = in_array($page, ['login', 'register'], true);
     <link rel="stylesheet" href="<?= BASE_URL ?>css/tokens.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/base.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/ranking.css">
-    
+   <link rel="stylesheet" href="<?= BASE_URL ?>css/components/navbar.css">
+   <link rel="stylesheet" href="<?= BASE_URL ?>css/components/bottom-nav.css">
+   <?php if ($hasPageStyle): ?>
+      <link rel="stylesheet" href="<?= BASE_URL . $pageStyle ?>">
+   <?php endif; ?>
+
 </head>
