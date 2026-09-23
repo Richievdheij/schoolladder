@@ -3,7 +3,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body,
@@ -18,16 +18,16 @@ figure,
 blockquote,
 dl,
 dd {
-  margin: 0;
+    margin: 0;
 }
 
 img,
 picture,
 svg,
 video {
-  display: block;
-  max-width: 100%;
-  height: auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Keep these at 16px or larger. Below that iOS zooms the whole page in the
@@ -36,8 +36,8 @@ button,
 input,
 select,
 textarea {
-  font: inherit;
-  color: inherit;
+    font: inherit;
+    color: inherit;
 }
 
 /* Anything you tap needs room for a fingertip. Links in a sentence are left
@@ -51,26 +51,18 @@ select,
 }
 
 html {
-  scroll-behavior: smooth;
-
-  /* Without this iOS inflates the text the moment you turn the phone sideways. */
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+    scroll-behavior: smooth;
 }
 
 body {
-  min-height: 100vh;
-  min-height: 100dvh; /* Discounts the address bar on mobile. */
-  background-color: var(--surface-page);
-  color: var(--text-body);
-  font-family: var(--font-body);
-  font-size: var(--fs-md);
-  font-weight: var(--fw-regular);
-  line-height: var(--lh-body);
-  -webkit-font-smoothing: antialiased;
-
-  /* A long compound word must wrap, not push the page wider than the screen. */
-  overflow-wrap: break-word;
+    min-height: 100vh;
+    background-color: var(--surface-page);
+    color: var(--text-body);
+    font-family: var(--font-body);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Headings already get the right font, colour and size. Add nothing yourself. */
@@ -80,209 +72,201 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--text-heading);
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--ls-heading);
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-heading);
 }
 
 h1 {
-  font-size: var(--fs-h1);
-  line-height: var(--lh-tight);
+    font-size: var(--fs-h1);
+    line-height: var(--lh-tight);
 }
 
 h2 {
-  font-size: var(--fs-h2);
-  line-height: var(--lh-tight);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-tight);
 }
 
 h3 {
-  font-size: var(--fs-h3);
-  line-height: var(--lh-snug);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-snug);
 }
 
 h4 {
-  font-size: var(--fs-h4);
-  line-height: var(--lh-snug);
+    font-size: var(--fs-h4);
+    line-height: var(--lh-snug);
 }
 
 h5 {
-  font-size: var(--fs-h5);
-  line-height: var(--lh-snug);
+    font-size: var(--fs-h5);
+    line-height: var(--lh-snug);
 }
 
 h6 {
-  font-size: var(--fs-h6);
-  line-height: var(--lh-snug);
+    font-size: var(--fs-h6);
+    line-height: var(--lh-snug);
 }
 
 p {
-  max-width: 70ch;
+    max-width: 70ch;
 }
 
 strong,
 b {
-  font-weight: var(--fw-semibold);
+    font-weight: var(--fw-semibold);
 }
 
 small {
-  font-size: var(--fs-xs);
+    font-size: var(--fs-xs);
 }
 
 a {
-  color: var(--text-heading);
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-  transition: color var(--transition);
+    color: var(--text-heading);
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    transition: color var(--transition);
 }
 
-/* Pointer devices only. On a touchscreen a hover state stays stuck on the link
-   after you tap it. */
-@media (hover: hover) {
-  a:hover {
+a:hover {
     color: var(--text-muted);
-  }
 }
 
 ul,
 ol {
-  padding-left: var(--space-xl);
-  margin: 0;
+    padding-left: var(--space-xl);
+    margin: 0;
 }
 
 code,
 pre,
 kbd {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
 }
 
 code {
-  padding: 0.1em 0.4em;
-  border-radius: var(--radius-sm);
-  background-color: var(--accent-soft);
-  color: var(--text-heading);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    background-color: var(--accent-soft);
+    color: var(--text-heading);
 }
 
 pre {
-  overflow-x: auto;
-  padding: var(--space-lg);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  background-color: var(--surface-2);
+    overflow-x: auto;
+    padding: var(--space-lg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-2);
 }
 
 pre code {
-  padding: 0;
-  background: none;
+    padding: 0;
+    background: none;
 }
 
 hr {
-  height: 1px;
-  border: 0;
-  background-color: var(--border-subtle);
+    height: 1px;
+    border: 0;
+    background-color: var(--border-subtle);
 }
 
 /* Keyboard users must always see where they are. Do not remove. */
 :focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
 }
 
 /* layout */
 .container {
-  width: 100%;
-  max-width: var(--container);
-  margin-inline: auto;
-
-  /* max() keeps the content clear of the notch when the phone is sideways. */
-  padding-inline:
-    max(var(--gutter), env(safe-area-inset-left))
-    max(var(--gutter), env(safe-area-inset-right));
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
 }
 
 .section {
-  padding-block: var(--section-padding);
+    padding-block: var(--space-4xl);
 }
 
 .section--tight {
-  padding-block: var(--section-padding-tight);
+    padding-block: var(--space-2xl);
 }
 
 .grid {
-  display: grid;
-  gap: var(--space-xl);
+    display: grid;
+    gap: var(--space-xl);
 }
 
 @media (min-width: 640px) {
-  .grid--2,
-  .grid--4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .grid--2,
+    .grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (min-width: 900px) {
-  .grid--3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
+    .grid--3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
-  .grid--4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
+    .grid--4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 /* utilities */
 .stack > * + * {
-  margin-top: var(--space-lg);
+    margin-top: var(--space-lg);
 }
 
 .text-muted {
-  color: var(--text-muted);
+    color: var(--text-muted);
 }
 
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
 .lead {
-  font-size: var(--fs-xl);
-  color: var(--text-body);
+    font-size: var(--fs-xl);
+    color: var(--text-body);
 }
 
 .overline {
-  font-family: var(--font-heading);
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--ls-overline);
-  color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-overline);
+    color: var(--text-muted);
 }
 
 .mono {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
 }
 
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+    html {
+        scroll-behavior: auto;
+    }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
