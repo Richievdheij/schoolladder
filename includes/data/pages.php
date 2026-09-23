@@ -41,7 +41,7 @@ $navItems = [
     ],
     'grades' => [
         'label'  => 'Cijfers',
-        'url'    => 'grades/',
+        'url'    => 'pages/grades.php',
         'icon'   => 'file-text',
         'group'  => 'pages',
         'bottom' => true,
