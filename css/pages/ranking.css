@@ -1,0 +1,59 @@
+/*ranking page css, maybe this should be in a separate file, but the header is imported, so I'm putting it here for now*/
+.navy-space {
+    height: 20px;
+}
+
+#your-position, #ranking {
+    border-radius: 20px;
+}
+
+.row-containers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--space-lg);
+}
+
+#2nd-surface {
+    border-radius: 20px;
+    padding: var(--space-lg);
+}
+
+#ranking-filters {
+    padding-left: 10.5rem
+}
+
+.filter-button {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: none
+}
+
+#ranking {
+    display: grid;
+    grid-template-columns: 3fr 0fr;
+}
+
+.ranking-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 0fr 3fr 0fr;
+}
+
+.first-ranking-position {
+    padding: 0.5rem 1.2rem;
+    margin-right: 0.5rem;
+    background-color: var(--brand-purple);
+    border-radius: var(--radius-full);
+}
+
+.other-ranking-position {
+    padding: 0.5rem 1.05rem;
+    margin-right: 0.5rem;
+    background-color: var(--brand-lilac);
+    border-radius: var(--radius-full);
+}
+
+.growth {
+    padding: 0.5rem
+}

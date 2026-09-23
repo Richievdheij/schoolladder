@@ -13,9 +13,12 @@ require_once __DIR__ . '/config.php';
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
 
     <link rel="stylesheet" href="<?= BASE_URL ?>css/tokens.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/base.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/ranking.css">
+    
 </head>
