@@ -111,7 +111,7 @@ function renderGradeRow(array $row): void
 
             <!-- No grades yet: show a message instead of an empty page. -->
             <div class="card">
-                <p class="text-muted">Zodra een docent een cijfer invoert, verschijnt het hier.</p>
+                <?= emptyState('file-text', 'Nog geen cijfers', 'Zodra een docent een cijfer invoert, verschijnt het hier.') ?>
             </div>
 
         <?php else: ?>

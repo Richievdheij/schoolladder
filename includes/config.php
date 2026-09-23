@@ -44,6 +44,19 @@ function icon(string $name): string
     return file_get_contents($file);
 }
 
+/**
+ * What a card shows when it has nothing in it yet: an icon, a title and a
+ * short line of text. Styling lives in .empty-state in components.css.
+ */
+function emptyState(string $iconName, string $title, string $text): string
+{
+    return '<div class="empty-state">'
+        . '<span class="empty-state__icon">' . icon($iconName) . '</span>'
+        . '<p class="empty-state__title">' . e($title) . '</p>'
+        . '<p class="empty-state__text">' . e($text) . '</p>'
+        . '</div>';
+}
+
 /** Return the database connection. Connects on first use. */
 function db(): PDO
 {

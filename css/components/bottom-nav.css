@@ -23,6 +23,8 @@
      page you are on sits. */
   padding: var(--space-sm);
 
+  /* Same subtle edge as .card, so the bar reads as part of the same set. */
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   background-color: var(--surface-2);
   box-shadow: var(--shadow-md);
