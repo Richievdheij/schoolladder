@@ -37,12 +37,6 @@
   color: var(--text-heading);
 }
 
-/* Cards in the same row keep their own height, so opening the older grades
-   in one card doesn't stretch the card next to it. */
-.grades__subjects {
-  align-items: start;
-}
-
 .grades__subject-title {
   display: flex;
   align-items: center;
