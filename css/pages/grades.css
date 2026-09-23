@@ -19,6 +19,12 @@
   margin-top: 0;
 }
 
+/* Same size as the subject titles. Only h2's inside .card__head get this
+   automatically, and this one isn't in a .card__head. */
+.grades__summary h2 {
+  font-size: var(--fs-h4);
+}
+
 .grades__summary p {
   margin-top: var(--space-sm);
 }
@@ -29,6 +35,12 @@
   font-size: var(--fs-h2);
   font-weight: var(--fw-bold);
   color: var(--text-heading);
+}
+
+/* Cards in the same row keep their own height, so opening the older grades
+   in one card doesn't stretch the card next to it. */
+.grades__subjects {
+  align-items: start;
 }
 
 .grades__subject-title {
@@ -52,6 +64,7 @@
 
 /* Divider line between the header (subject + average) and the grade list below. */
 .grades__subject > .card__head {
+  align-items: center; /* baseline would put the icon out of line with the average */
   padding-bottom: var(--space-lg);
   border-bottom: 1px solid var(--border-subtle);
 }

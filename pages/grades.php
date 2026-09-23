@@ -127,7 +127,8 @@ function renderGradeRow(array $row): void
                     <span class="grades__summary-value"><?= e(formatGrade(weightedAverage($grades))) ?></span>
                 </div>
 
-                <!-- One card per subject. -->
+                <!-- One card per subject, two columns from tablet width. -->
+                <div class="grid grid--2 grades__subjects">
                 <?php foreach ($bySubject as $subject => $data): ?>
                     <?php
                     $newest = $data['grades'][0];                 // newest grade, always visible
@@ -136,10 +137,10 @@ function renderGradeRow(array $row): void
 
                     <div class="card grades__subject">
                         <div class="card__head">
-                            <span class="grades__subject-title">
+                            <div class="grades__subject-title">
                                 <?= icon($data['icon']) ?>
                                 <h2><?= e($subject) ?></h2>
-                            </span>
+                            </div>
                             <span class="grades__subject-average"><?= e(formatGrade(weightedAverage($data['grades']))) ?></span>
                         </div>
 
@@ -167,6 +168,7 @@ function renderGradeRow(array $row): void
                     </div>
 
                 <?php endforeach; ?>
+                </div>
             </div>
 
         <?php endif; ?>
