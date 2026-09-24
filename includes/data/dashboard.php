@@ -382,7 +382,7 @@ function dashboardStanding(?array $student): array
     $months = [1 => 'jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
 
     $periods = [
-        'days'   => ['label' => '7 dagen',     'group' => '%Y-%m-%d', 'take' => 7],
+        'days'   => ['label' => 'Dagelijks',   'group' => '%Y-%m-%d', 'take' => 7],
         'weeks'  => ['label' => 'Wekelijks',   'group' => '%x-%v',    'take' => 6],
         'months' => ['label' => 'Maandelijks', 'group' => '%Y-%m',    'take' => 6],
     ];
