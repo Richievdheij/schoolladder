@@ -44,32 +44,40 @@ $userId = isset($sessionUser['id']) ? (int) $sessionUser['id'] : null;
 /* Deliberately not kept in the session: a class can change while someone is
    logged in. If the lookup fails the rest of the page still stands. */
 $userClass = null;
+$studentId = null;
 
 if ($userId !== null) {
     try {
         $statement = db()->prepare(
-            'SELECT c.name
+            'SELECT s.id, c.name
                FROM students s
                JOIN classes c ON c.id = s.class_id
               WHERE s.user_id = ?'
         );
         $statement->execute([$userId]);
+        $studentRow = $statement->fetch();
 
-        $userClass = $statement->fetchColumn() ?: null;
+        if ($studentRow) {
+            $studentId = (int) $studentRow['id'];
+            $userClass = $studentRow['name'];
+        }
     } catch (Throwable $exception) {
         $userClass = null;
+        $studentId = null;
     }
 }
 
 $currentUser = [
-    'id'       => $userId,
-    'name'     => $sessionUser['name'] ?? null,
-    'initials' => initialsOf($sessionUser['name'] ?? null),
-    'role'     => match ($sessionUser['role'] ?? null) {
+    'id'         => $userId,
+    'name'       => $sessionUser['name'] ?? null,
+    'initials'   => initialsOf($sessionUser['name'] ?? null),
+    'role'       => match ($sessionUser['role'] ?? null) {
         'student' => 'Leerling',
         'teacher' => 'Docent',
         'admin'   => 'Beheerder',
         default   => null,
     },
-    'class'    => $userClass,
+    'class'      => $userClass,
+    // Null for anyone who is not a student: teachers, admins, nobody logged in.
+    'student_id' => $studentId,
 ];

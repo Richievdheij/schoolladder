@@ -21,7 +21,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/user.php';
 
-/** @var array{id: ?int, name: ?string, initials: ?string, role: ?string, class: ?string} $currentUser */
+/** @var array{id: ?int, name: ?string, initials: ?string, role: ?string, class: ?string, student_id: ?int} $currentUser */
 
 /** Steps on the meters under "Waar je op beoordeeld wordt". */
 const ASSESSMENT_STEPS = 4;

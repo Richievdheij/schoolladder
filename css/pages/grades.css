@@ -119,16 +119,6 @@
   font-size: var(--fs-sm);
 }
 
-.grades__weight-pill {
-  flex: none;
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-full);
-  background-color: var(--accent-soft);
-  color: var(--text-heading);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-}
-
 .grades__more > * + * {
   margin-top: var(--space-md);
 }

@@ -8,41 +8,35 @@ require __DIR__ . '/../includes/config.php';
 require __DIR__ . '/../includes/data/user.php';
 require __DIR__ . '/../includes/data/subjects.php';
 
-// All grades of this student with the subject's name and abbreviation, newest first.
-$stmt = db()->prepare(
-    'SELECT g.type, g.weight, g.grade, g.created_at, s.name AS subject_name, s.abbreviation
-     FROM grades g
-     JOIN subjects s ON s.id = g.subject_id
-     WHERE g.student_id = :student_id
-     ORDER BY g.created_at DESC'
-);
-$stmt->execute(['student_id' => $currentUser['student_id']]);
-
 $grades = [];    // all grades in one list (for the overall average)
 $bySubject = []; // the same grades, grouped by subject
 
-foreach ($stmt->fetchAll() as $row) {
-    // The database returns numbers as text; turn them into real numbers.
-    $row['grade'] = (float) $row['grade'];
-    $row['weight'] = (float) $row['weight'];
+// Only a student has grades. Anyone else gets the empty state.
+if ($currentUser['student_id'] !== null) {
+    // All grades of this student with the subject's name and abbreviation, newest first.
+    $stmt = db()->prepare(
+        'SELECT g.kind, g.grade, g.created_at, s.name AS subject_name, s.abbreviation
+         FROM grades g
+         JOIN subjects s ON s.id = g.subject_id
+         WHERE g.student_id = :student_id
+         ORDER BY g.created_at DESC, g.id DESC'
+    );
+    $stmt->execute(['student_id' => $currentUser['student_id']]);
 
-    $grades[] = $row;
-    $bySubject[$row['subject_name']]['icon'] = subjectIcon($row['abbreviation']);
-    $bySubject[$row['subject_name']]['grades'][] = $row;
+    foreach ($stmt->fetchAll() as $row) {
+        // The database returns numbers as text; turn them into real numbers.
+        $row['grade'] = (float) $row['grade'];
+
+        $grades[] = $row;
+        $bySubject[$row['subject_name']]['icon'] = subjectIcon($row['abbreviation']);
+        $bySubject[$row['subject_name']]['grades'][] = $row;
+    }
 }
 
-// Weighted average: a grade with weight 2 counts twice as much.
-function weightedAverage(array $rows): float
+// Every grade counts the same, just like the averages on the dashboard.
+function average(array $rows): float
 {
-    $sum = 0;
-    $totalWeight = 0;
-
-    foreach ($rows as $row) {
-        $sum += $row['grade'] * $row['weight'];
-        $totalWeight += $row['weight'];
-    }
-
-    return $sum / $totalWeight;
+    return array_sum(array_column($rows, 'grade')) / count($rows);
 }
 
 // Change grade from x.x to x,x
@@ -77,14 +71,9 @@ function renderGradeRow(array $row): void
         </span>
 
         <span class="grades__meta">
-            <span class="grades__type"><?= e(ucfirst($row['type'])) ?></span>
+            <span class="grades__type"><?= e(ucfirst($row['kind'])) ?></span>
             <span class="grades__date"><?= e(relativeDate($row['created_at'])) ?></span>
         </span>
-
-        <?php // Only show the weight if it isn't the default (1). 1.5 is shown as "1,5". ?>
-        <?php if ($row['weight'] !== 1.0): ?>
-            <span class="grades__weight-pill">&times;<?= e(str_replace('.', ',', (string) $row['weight'])) ?></span>
-        <?php endif; ?>
     </li>
     <?php
 }
@@ -123,9 +112,9 @@ function renderGradeRow(array $row): void
                 <div class="card grades__summary">
                     <div>
                         <h2>Algemeen gemiddelde</h2>
-                        <p class="text-muted">Gewogen gemiddelde over <?= count($grades) ?> cijfers.</p>
+                        <p class="text-muted">Gemiddelde over <?= count($grades) ?> <?= count($grades) === 1 ? 'cijfer' : 'cijfers' ?>.</p>
                     </div>
-                    <span class="grades__summary-value"><?= e(formatGrade(weightedAverage($grades))) ?></span>
+                    <span class="grades__summary-value"><?= e(formatGrade(average($grades))) ?></span>
                 </div>
 
                 <!-- One card per subject. -->
@@ -141,7 +130,7 @@ function renderGradeRow(array $row): void
                                 <?= icon($data['icon']) ?>
                                 <h2><?= e($subject) ?></h2>
                             </div>
-                            <span class="grades__subject-average"><?= e(formatGrade(weightedAverage($data['grades']))) ?></span>
+                            <span class="grades__subject-average"><?= e(formatGrade(average($data['grades']))) ?></span>
                         </div>
 
                         <ul class="grades__list">
