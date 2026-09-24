@@ -2,6 +2,8 @@
 ob_start();
 session_start();
 
+$page = "register";
+
 if (!empty($_SESSION['user'])) {
     header('Location: /');
     exit;
@@ -9,8 +11,6 @@ if (!empty($_SESSION['user'])) {
 
 include_once("../../includes/config.php");
 $db = db();
-
-$pageTitle = 'Register | Schoolladder';
 
 $errors = null;
 
@@ -106,7 +106,8 @@ if (isset($_POST['submit'])) {
         </form>
     </main>
 
-    <?php require __DIR__ . '/../../includes/bottom-nav.php'; ?>
+    <?php // require __DIR__ . '/../../includes/bottom-nav.php'; 
+    ?>
 
 </body>
 

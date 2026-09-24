@@ -9,48 +9,10 @@ if (empty($_SESSION['user'])) {
     exit;
 }
 
-// include_once("../../includes/config.php");
-// $db = db();
+require_once __DIR__ . '/../includes/data/user.php';
+require_once __DIR__ . '/../includes/data/attendance.php';
 
-// $defaultError = "Email of wachtwoord incorrect";
-
-// $pageTitle = 'Login | Schoolladder';
-// $errors = [];
-
-// if (isset($_POST['submit'])) {
-//     $email = htmlentities($_POST['email']);
-//     $password = $_POST['password'];
-
-//     if (!isset($email) || $email === '') {
-//         $errors[] = "E-mailadres is verplicht";
-//     }
-
-//     if (!isset($password) || $password === '') {
-//         $errors[] = "Wachtwoord is verplicht";
-//     }
-
-//     if (empty($errors)) {
-//         $query = "SELECT * FROM `users` WHERE email = :email;";
-//         $statement = $db->prepare($query);
-//         $statement->execute([":email" => $email]);
-
-//         if (($user = $statement->fetch()) === false) {
-//             $errors[] = $defaultError;
-//         }
-//     }
-
-//     if (empty($errors) && !empty($user)) {
-//         if (!password_verify($password, $user['password'])) {
-//             $errors[] = $defaultError;
-//         }
-//     }
-
-//     if (empty($errors) && !empty($user)) {
-//         $_SESSION['user'] = $user;
-//         header('Location: /');
-//         exit;
-//     }
-// }
+/** @var array $attendance */
 
 ?>
 <!DOCTYPE html>
@@ -69,115 +31,67 @@ if (empty($_SESSION['user'])) {
 
         <div class="container section" style="margin-top: 8px;">
             <h3>Vandaag</h3>
-            <div class="aanwezigheidsKaart">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
+
+            <?php if ($attendance['today'] === []): ?>
+                <?= emptyState(
+                    'user-check',
+                    'Nog geen aanwezigheid vandaag.',
+                    'Vanaf je eersteles ziet het systeem waar je bent.'
+                ) ?>
+            <?php else: ?>
+                <?php foreach ($attendance['today'] as $card): ?>
+                    <div class="aanwezigheidsKaart<?= $card['class'] !== '' ? ' ' . e($card['class']) : '' ?>">
                         <div>
-                            <h5>Aardrijkskunde</h5>
                             <div>
-                                <p>Les</p>
-                                <p>|</p>
-                                <p>Op tijd</p>
+                                <?= icon('user-check') ?>
+                                <div>
+                                    <h5><?= e($card['subject']) ?></h5>
+                                    <div>
+                                        <p><?= e($card['kind']) ?></p>
+                                        <p>|</p>
+                                        <p><?= e($card['label']) ?></p>
+                                    </div>
+                                </div>
                             </div>
+                            <p><?= e($card['time']) ?></p>
                         </div>
                     </div>
-                    <p>12:00-12:45</p>
-                </div>
-            </div>
-            <div class="aanwezigheidsKaart afwezig">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
-                        <div>
-                            <h5>Aardrijkskunde</h5>
-                            <div>
-                                <p>Huiswerk</p>
-                                <p>|</p>
-                                <p>Afwezig</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p>12:00-12:45</p>
-                </div>
-            </div>
-            <div class="aanwezigheidsKaart te-laat">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
-                        <div>
-                            <h5>Aardrijkskunde</h5>
-                            <div>
-                                <p>SO</p>
-                                <p>|</p>
-                                <p>Te laat</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p>12:00-12:45</p>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
         <div class="container section" style="margin-top: 8px;">
             <h3>Laatste 7 dagen</h3>
-            <div class="aanwezigheidsKaart">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
+
+            <?php if ($attendance['last7Days'] === []): ?>
+                <?= emptyState(
+                    'user-check',
+                    'Nog geen registraties in de laatste 7 dagen.',
+                    'Zodra een docent je aanwezigheid heeft bijgehouden, staat het hier.'
+                ) ?>
+            <?php else: ?>
+                <?php foreach ($attendance['last7Days'] as $card): ?>
+                    <div class="aanwezigheidsKaart<?= $card['class'] !== '' ? ' ' . e($card['class']) : '' ?>">
                         <div>
-                            <h5>Aardrijkskunde</h5>
                             <div>
-                                <p>Les</p>
-                                <p>|</p>
-                                <p>Op tijd</p>
+                                <?= icon('user-check') ?>
+                                <div>
+                                    <h5><?= e($card['subject']) ?></h5>
+                                    <div>
+                                        <p><?= e($card['kind']) ?></p>
+                                        <p>|</p>
+                                        <p><?= e($card['label']) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="time">
+                                <p><?= e($card['time']) ?></p>
+                                <p><?= e($card['when']) ?></p>
                             </div>
                         </div>
                     </div>
-                    <div class="time">
-                        <p>12:00-12:45</p>
-                        <p>22/09/2026</p>
-                    </div>
-                </div>
-            </div>
-            <div class="aanwezigheidsKaart afwezig">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
-                        <div>
-                            <h5>Aardrijkskunde</h5>
-                            <div>
-                                <p>Huiswerk</p>
-                                <p>|</p>
-                                <p>Afwezig</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time">
-                        <p>12:00-12:45</p>
-                        <p>22/09/2026</p>
-                    </div>
-                </div>
-            </div>
-            <div class="aanwezigheidsKaart te-laat">
-                <div>
-                    <div>
-                        <?php include("../images/icons/user-check.svg"); ?>
-                        <div>
-                            <h5>Aardrijkskunde</h5>
-                            <div>
-                                <p>SO</p>
-                                <p>|</p>
-                                <p>Te laat</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time">
-                        <p>12:00-12:45</p>
-                        <p>22/09/2026</p>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </main>
 

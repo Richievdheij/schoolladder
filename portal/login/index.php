@@ -2,6 +2,8 @@
 ob_start();
 session_start();
 
+$page = "login";
+
 if (!empty($_SESSION['user'])) {
     header('Location: /');
     exit;
@@ -11,8 +13,6 @@ include_once("../../includes/config.php");
 $db = db();
 
 $defaultError = "Email of wachtwoord incorrect";
-
-$pageTitle = 'Login | Schoolladder';
 $errors = [];
 
 if (isset($_POST['submit'])) {
@@ -92,7 +92,8 @@ if (isset($_POST['submit'])) {
         </form>
     </main>
 
-    <?php require __DIR__ . '/../../includes/bottom-nav.php'; ?>
+    <?php // require __DIR__ . '/../../includes/bottom-nav.php'; 
+    ?>
 
 </body>
 
