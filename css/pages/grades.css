@@ -1,0 +1,202 @@
+/* Only for the grades page. head.php loads this file automatically because
+   the page sets $page = 'grades' and this file is called grades.css.
+
+   Every selector here starts with .grades, so it can never accidentally
+   affect another page. That's the whole rule. */
+
+.grades__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  background-image: var(--gradient-dark);
+  border: 1px solid var(--border-strong);
+}
+
+/* .card > * + * spaces cards vertically; this card lays its two children out
+   side by side instead, so that rule has to be switched off here. */
+.grades__summary > * + * {
+  margin-top: 0;
+}
+
+/* Same size as the subject titles. Only h2's inside .card__head get this
+   automatically, and this one isn't in a .card__head. */
+.grades__summary h2 {
+  font-size: var(--fs-h4);
+}
+
+.grades__summary p {
+  margin-top: var(--space-sm);
+}
+
+.grades__summary-value {
+  flex: none;
+  font-family: var(--font-heading);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  color: var(--text-heading);
+}
+
+.grades__subject-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--text-muted);
+}
+
+.grades__subject-title h2 {
+  color: var(--text-heading);
+}
+
+.grades__subject-average {
+  flex: none;
+  font-family: var(--font-heading);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  color: var(--text-heading);
+}
+
+/* Divider line between the header (subject + average) and the grade list below. */
+.grades__subject > .card__head {
+  align-items: center; /* baseline would put the icon out of line with the average */
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.grades__list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.grades__list > * + * {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.grades__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.grades__badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background-color: var(--surface-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text-heading);
+}
+
+.grades__badge--fail {
+  border-color: var(--status-error-text);
+  color: var(--status-error-text);
+}
+
+.grades__meta {
+  display: grid;
+  flex: 1;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.grades__type {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-heading);
+}
+
+.grades__date {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.grades__weight-pill {
+  flex: none;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background-color: var(--accent-soft);
+  color: var(--text-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.grades__more > * + * {
+  margin-top: var(--space-md);
+}
+
+.grades__more-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  min-height: var(--tap-target);
+  padding-inline: var(--space-sm);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  list-style: none;
+  cursor: pointer;
+}
+
+.grades__more-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.grades__more-chevron {
+  display: flex;
+  transition: transform var(--transition);
+}
+
+.grades__more[open] > .grades__more-toggle .grades__more-chevron {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .grades__more-toggle:hover {
+    background-color: var(--accent-soft);
+    color: var(--text-heading);
+  }
+}
+
+/* Animates opening/closing the hidden grades via ::details-content. Browsers
+   without support, or users who prefer reduced motion, just see it snap open,
+   which still works fine. The animation is only decoration. */
+@media not (prefers-reduced-motion: reduce) {
+  @supports selector(::details-content) {
+    .grades__more {
+      interpolate-size: allow-keywords;
+    }
+
+    .grades__more::details-content {
+      overflow: hidden;
+      height: 0;
+      opacity: 0;
+      transition:
+        height 300ms ease,
+        opacity 200ms ease,
+        content-visibility 300ms allow-discrete;
+    }
+
+    .grades__more[open]::details-content {
+      height: auto;
+      opacity: 1;
+    }
+
+    @starting-style {
+      .grades__more[open]::details-content {
+        height: 0;
+        opacity: 0;
+      }
+    }
+  }
+}

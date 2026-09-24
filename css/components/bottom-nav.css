@@ -21,8 +21,10 @@
 
   /* More room at the bottom than at the top: that is where the label of the
      page you are on sits. */
-  padding: var(--space-sm) var(--space-sm) var(--space-lg);
+  padding: var(--space-sm);
 
+  /* Same subtle edge as .card, so the bar reads as part of the same set. */
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   background-color: var(--surface-2);
   box-shadow: var(--shadow-md);
