@@ -1,0 +1,74 @@
+.hero-card {
+    background-image: var(--gradient-dark);
+    border: 1px solid var(--border-strong);
+    margin-bottom: var(--space-lg);
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.tiles .card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2xs);
+    padding: var(--space-lg);
+}
+
+.overview-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.status-label,
+.pill-shapes {
+    border-radius: var(--radius-full);
+    background-color: var(--accent-soft);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+}
+
+.status-label {
+    flex: none;
+    padding: var(--space-2xs) var(--space-md);
+    color: var(--brand-mist);
+}
+
+.pill-shapes {
+    padding: var(--space-xs) var(--space-sm);
+    color: var(--text-body);
+}
+
+.on-track {
+    color: var(--status-success-text);
+}
+
+.attention {
+    color: var(--status-error-text);
+}
+
+.no-grades {
+    color: var(--text-muted);
+}
+
+.card strong {
+    color: var(--brand-mist);
+}
+
+.subject-amount {
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-tight);
+}
+
+@media (max-width: 400px) {
+    .pill-shapes {
+        padding: var(--space-2xs) var(--space-xs);
+        font-size: var(--fs-xs);
+    }
+}
