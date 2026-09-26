@@ -1,3 +1,129 @@
+<?php
+
+require_once __DIR__ . '/../includes/data/user.php';
+
+$page = 'subjects';
+
+$db = db();
+
+// Functie die op basis van het gemiddelde cijfer van een leerling het statuslabel, de kleur en het advies per vak bepaalt
+function maakStatus($gemiddelde, $vaknaam)
+{
+    // Als er nog geen cijfers zijn voor dit vak
+    if ($gemiddelde === null) {
+        return ['tekst' => 'Geen cijfers', 'class' => 'no-grades', 'advies' => 'Je hebt nog geen cijfers voor ' . $vaknaam . '.'];
+    }
+    // Als gemiddelde cijfer lager dan 5,5 is
+    if ($gemiddelde < 5.5) {
+        return ['tekst' => 'Aandacht', 'class' => 'attention', 'advies' => 'Je loopt achter met ' . $vaknaam . '. Ga door met oefenen!'];
+    }
+    // Als gemiddelde cijfer 5,5 of hoger is
+    return ['tekst' => 'Op schema', 'class' => 'on-track', 'advies' => 'Je bent goed op weg met ' . $vaknaam . '. Blijf zo doorgaan!'];
+}
+
+// Zoekt leerlinmg en klas van ingelogde user op
+$studentId = null;
+$klasId = null;
+
+if ($currentUser['id'] !== null) {
+    $statement = $db->prepare('SELECT id, class_id FROM students WHERE user_id = ?');
+    $statement->execute([$currentUser['id']]);
+    $leerling = $statement->fetch();
+
+    if ($leerling !== false) {
+        $studentId = $leerling['id'];
+        $klasId = $leerling['class_id'];
+    }
+}
+// Haalt alle vakken van de leerling op (alfabetische volgorde)
+$vakken = [];
+
+if ($studentId !== null) {
+    $statement = $db->prepare('
+        SELECT subjects.id, subjects.name
+        FROM student_subjects
+        JOIN subjects ON subjects.id = student_subjects.subject_id
+        WHERE student_subjects.student_id = ?
+        ORDER BY subjects.name
+    ');
+    $statement->execute([$studentId]);
+    $vakken = $statement->fetchAll();
+}
+
+// Gemiddelde cijfer van de leerling voor een vak
+$gemiddeldeQuery = $db->prepare('SELECT AVG(grade) FROM grades WHERE student_id = ? AND subject_id = ?');
+
+// Docent en het lokaal van de laatste les van een vak
+$docentQuery = $db->prepare('
+    SELECT users.name AS docent, events.location AS lokaal
+    FROM events
+    JOIN users ON users.id = events.teacher_id
+    WHERE events.subject_id = ? AND events.class_id = ?
+    ORDER BY events.start_time DESC
+    LIMIT 1
+');
+
+// Volgende toets van een vak
+$toetsQuery = $db->prepare('
+    SELECT events.start_time
+    FROM events
+    JOIN tests ON tests.event_id = events.id
+    WHERE events.subject_id = ? AND events.class_id = ? AND events.start_time >= NOW()
+    ORDER BY events.start_time
+    LIMIT 1
+');
+
+// Vult elk vak aan met de docent, het lokaal, de volgende toets en de status
+foreach ($vakken as $nummer => $vak) {
+    $gemiddeldeQuery->execute([$studentId, $vak['id']]);
+    $gemiddelde = $gemiddeldeQuery->fetchColumn();
+
+    if ($gemiddelde !== null) {
+        $gemiddelde = round((float)$gemiddelde, 1);
+    }
+
+    $docentQuery->execute([$vak['id'], $klasId]);
+    $les = $docentQuery->fetch();
+    $vakken[$nummer]['docent'] = $les ? $les['docent'] : null;
+    $vakken[$nummer]['lokaal'] = $les ? $les['lokaal'] : null;
+
+    $toetsQuery->execute([$vak['id'], $klasId]);
+    $toets = $toetsQuery->fetchColumn();
+    $vakken[$nummer]['volgende_toets'] = $toets === false ? null : $toets;
+
+    $vakken[$nummer]['status'] = maakStatus($gemiddelde, $vak['name']);
+}
+
+// Overzicht bovenaan de pagina
+$aantalVakken = count($vakken);
+$aantalOpSchema = 0;
+$aantalAandacht = 0;
+$eerstvolgendeToets = null;
+
+// Telt hoeveel vakken op schema staan en hoeveel vakken er nog aandacht nodig hebben
+foreach ($vakken as $vak) {
+    if ($vak['status']['class'] === 'attention') {
+        $aantalAandacht++;
+    } elseif ($vak['status']['class'] === 'on-track') {
+        $aantalOpSchema++;
+    }
+}
+
+// Zoekt het vak waarvan de volgende toets het eerst is
+foreach ($vakken as $vak) {
+    // Slaat vak over als geen toets is gepland
+    if ($vak['volgende_toets'] === null) {
+        continue;
+    }
+
+    if ($eerstvolgendeToets === null) {
+        $eerstvolgendeToets = $vak;
+    } elseif ($vak['volgende_toets'] < $eerstvolgendeToets['volgende_toets']) {
+        $eerstvolgendeToets = $vak;
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="nl">
