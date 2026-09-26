@@ -9,7 +9,8 @@
     <div class="container section subjects">
         <div class="page__head">
             <h1>Vakken</h1>
-            <p class="lead">Bekijk per vak hoe je ervoor staat, wie je docent is en wanneer je volgende toets gepland staat.</p>
+            <p class="lead">Bekijk per vak hoe je ervoor staat, wie je docent is en wanneer je volgende toets gepland
+                staat.</p>
         </div>
 
         <div class="card hero-card">
