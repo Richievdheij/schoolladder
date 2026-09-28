@@ -3,7 +3,7 @@
     height: 20px;
 }
 
-#your-position, #ranking, .second-surface, .filter-button {
+#your-position, #school-ranking, #class-ranking, #year-group-ranking, .second-surface, .filter-button {
     border-radius: 20px;
 }
 
@@ -42,9 +42,14 @@
     background-color: var(--brand-purple);
 }
 
-#ranking {
+.filter-button:active {
+    background-color: var(--brand-purple);
+}
+
+.text-row {
     display: grid;
     grid-template-columns: 3fr 0fr;
+    width: 100%;
 }
 
 .ranking-row {

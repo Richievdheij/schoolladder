@@ -8,8 +8,8 @@ require_once __DIR__ . '/../includes/config.php';
 //Accounts need to be made first (preferably on other page, but I can do it here for now) in order to get student names from user_id - gedaan
 //give students points, year_group and class_id. - gedaan
 //put the student names in #ranking in order of who has the most points - gedaan
-//make the filters work (with js) - moet ik nog doen, maar kom ik denk ik wel uit met eerder gebruikte code
-//make the growth work based on last update - ik weet niet hoe ik dit doe...
+//make the filters work (with js) - gedaan
+//make the growth work based on last update - ik weet niet helemaal hoe ik dit doe...
 
 $query = "SELECT * FROM schoolladder.users";
 $result = db()->query($query);
@@ -72,27 +72,27 @@ $query = "SELECT * FROM schoolladder.students";
 $result = db()->query($query);
 
 if ($result->rowCount() == 0) {
-    $query = "INSERT INTO schoolladder.students (user_id, points, year_group, class_id)
+    $query = "INSERT INTO schoolladder.students (user_id, points, previous_points, year_group, class_id)
 VALUES
-    (1, 1356, 4, 10),
-    (2, 1350, 4, 10),
-    (3, 1302, 4, 10),
-    (4, 1285, 4, 10),
-    (5, 1260, 4, 10),
-    (6, 1248, 4, 10),
-    (7, 1233, 4, 10),
-    (8, 1210, 4, 10),
-    (9, 1194, 4, 10),
-    (10, 1150, 4, 10),
-    (11, 1369, 4, 12),
-    (12, 1341, 1, 2),
-    (13, 1290, 3, 8),
-    (14, 1245, 4, 12),
-    (15, 1330, 2, 6),
-    (16, 1262, 4, 11),
-    (17, 1299, 4, 11),
-    (18, 1300, 5, 14),
-    (19, 1375, 6, 17)";
+    (1, 1356, 1343, 4, 10),
+    (2, 1350, 1346, 4, 10),
+    (3, 1302, 1296, 4, 10),
+    (4, 1285, 1280, 4, 10),
+    (5, 1260, 1250, 4, 10),
+    (6, 1248, 1225, 4, 10),
+    (7, 1233, 1228, 4, 10),
+    (8, 1210, 1205, 4, 10),
+    (9, 1194, 1189, 4, 10),
+    (10, 1150, 1150, 4, 10),
+    (11, 1369, 1345, 4, 12),
+    (12, 1341, 1336, 4, 2),
+    (13, 1290, 1285, 4, 8),
+    (14, 1245, 1240, 4, 12),
+    (15, 1330, 1325, 4, 6),
+    (16, 1262, 1257, 4, 11),
+    (17, 1299, 1294, 4, 11),
+    (18, 1300, 1293, 5, 14),
+    (19, 1375, 1360, 6, 17)";
     $result = db()->query($query);
 }
 
@@ -104,7 +104,30 @@ $query = "
 ";
 $result = db()->query($query);
 
-$students = $result->fetchAll();
+$all_students = $result->fetchAll();
+
+$query = "
+    SELECT students.*, users.name
+    FROM schoolladder.students
+    JOIN schoolladder.users ON students.user_id = users.id
+    JOIN schoolladder.classes ON students.class_id = classes.id   
+    WHERE class_id = 10
+    ORDER BY students.points DESC
+";
+$result = db()->query($query);
+
+$class4A_students = $result->fetchAll();
+
+$query = "
+    SELECT students.*, users.name
+    FROM schoolladder.students
+    JOIN schoolladder.users ON students.user_id = users.id   
+    WHERE year_group = 4
+    ORDER BY students.points DESC
+";
+$result = db()->query($query);
+
+$year_group_4_students = $result->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -129,19 +152,19 @@ $students = $result->fetchAll();
         <div class="row-containers">
             <div class="container second-surface" style="background-color: var(--surface-band);">
                 <p><strong>Positie</strong></p>
-                <h4>#10</h4>
-                <p>van 26 leerlingen</p>
+                <h4 id="position">#6</h4>
+                <p id="student-amount">van 26 leerlingen</p>
             </div>
             <div class="container second-surface" style="background-color: var(--surface-band);">
                 <p><strong>Trend</strong></p>
-                <h4>+3</h4>
+                <h4>+2</h4>
                 <p>Sinds gisteren</p>
             </div>
         </div>
         <div class="container second-surface score" style="background-color: var(--surface-band);">
             <p><strong>Totale score</strong></p>
             <h4>1248</h4>
-            <p>Je bent 12 punten verwijdert van plek 5 op de klas ranglijst.</p>
+            <p id="points-away">Je bent 12 punten verwijdert van plek 5 op de klas ranglijst.</p>
         </div>
     </section>
 
@@ -149,20 +172,57 @@ $students = $result->fetchAll();
     </div>
 
     <section id="ranking-filters" class="">
-        <button class="filter-button">Klas</button>
-        <button class="filter-button">Jaarlaag</button>
-        <button class="filter-button">School</button>
+        <button class="filter-button" onclick="showClassRanking();
+        changeContent('position', (element) => {
+            element.textContent = '#6';
+        });
+        changeContent('student-amount', (element) => {
+            element.textContent = 'van 26 leerlingen';
+        });
+        changeContent('points-away', (element) => {
+            element.textContent = 'Je bent 12 punten verwijdert van plek 5 op de klas ranglijst.';
+        });">
+            Klas
+        </button>
+        <button class="filter-button" onclick="showYearGroupRanking();
+        changeContent('position', (element) => {
+            element.textContent = '#9';
+        });
+        changeContent('student-amount', (element) => {
+            element.textContent = 'van 76 leerlingen';
+        });
+        changeContent('points-away', (element) => {
+            element.textContent = 'Je bent 12 punten verwijdert van plek 8 op de jaarlaag ranglijst.';
+        });">
+            Jaarlaag
+        </button>
+        <button class="filter-button" onclick="showSchoolRanking();
+        changeContent('position', (element) => {
+            element.textContent = '#15';
+        });
+        changeContent('student-amount', (element) => {
+            element.textContent = 'van 450 leerlingen';
+        });
+        changeContent('points-away', (element) => {
+            element.textContent = 'Je bent 12 punten verwijdert van plek 15 op de school ranglijst.';
+        });">
+            School
+        </button>
     </section>
 
     <div class="navy-space" style="background-color: var(--surface-page);">
     </div>
 
-    <section id="ranking" class="section container" style="background-color: var(--surface-2)">
+    <section id="class-ranking" class="section container" style="background-color: var(--surface-2)">
 
-        <h3>Topselectie</h3>
-        <p>Klas 4A</p>
+        <div class="text-row">
+            <h3>Topselectie</h3>
+            <p>Klas 4A</p>
+        </div>
 
-        <?php foreach ($students as $position => $student): ?>
+        <?php foreach ($class4A_students as $position => $student): ?>
+
+            <?php if ($position >= 10) break; ?>
 
             <div class="ranking-row">
 
@@ -187,11 +247,86 @@ $students = $result->fetchAll();
                 </div>
 
                 <div class="growth">+2</div>
-
             </div>
-
         <?php endforeach; ?>
+    </section>
 
+    <section id="year-group-ranking" class="section container"
+             style="background-color: var(--surface-2); display: none;">
+
+        <div class="text-row">
+            <h3>Topselectie</h3>
+            <p>Jaarlaag 4</p>
+        </div>
+
+        <?php foreach ($year_group_4_students as $position => $student): ?>
+
+            <?php if ($position >= 10) break; ?>
+
+            <div class="ranking-row">
+
+                <div>
+                    <?php if ($position === 0): ?>
+                        <h4 class="first-ranking-position">1</h4>
+
+                    <?php elseif ($position === 9): ?>
+                        <h4 class="tenth-ranking-position">10</h4>
+
+                    <?php else: ?>
+                        <h4 class="other-ranking-position">
+                            <?= $position + 1 ?>
+                        </h4>
+                    <?php endif; ?>
+                </div>
+
+                <div>
+                    <p class="ranking-name" style="color: var(--white);">
+                        <strong><?= e($student['name']) ?></strong>
+                    </p>
+                </div>
+
+                <div class="growth">+2</div>
+            </div>
+        <?php endforeach; ?>
+    </section>
+
+    <section id="school-ranking" class="section container"
+             style="background-color: var(--surface-2); display: none;">
+
+        <div class="text-row">
+            <h3>Topselectie</h3>
+            <p>School</p>
+        </div>
+
+        <?php foreach ($all_students as $position => $student): ?>
+
+            <?php if ($position >= 10) break; ?>
+
+            <div class="ranking-row">
+
+                <div>
+                    <?php if ($position === 0): ?>
+                        <h4 class="first-ranking-position">1</h4>
+
+                    <?php elseif ($position === 9): ?>
+                        <h4 class="tenth-ranking-position">10</h4>
+
+                    <?php else: ?>
+                        <h4 class="other-ranking-position">
+                            <?= $position + 1 ?>
+                        </h4>
+                    <?php endif; ?>
+                </div>
+
+                <div>
+                    <p class="ranking-name" style="color: var(--white);">
+                        <strong><?= e($student['name']) ?></strong>
+                    </p>
+                </div>
+
+                <div class="growth">+2</div>
+            </div>
+        <?php endforeach; ?>
     </section>
 
 </main>
