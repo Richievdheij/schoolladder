@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 21 sep 2026 om 11:12
+-- Gegenereerd op: 27 sep 2026 om 17:34
 -- Serverversie: 8.4.2
--- PHP-versie: 8.4.21
+-- PHP-versie: 8.4.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,8 +31,8 @@ CREATE TABLE `classes`
 (
     `id`         int UNSIGNED                           NOT NULL,
     `name`       varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-    `created_at` timestamp                              NOT NULL,
-    `updated_at` timestamp                              NOT NULL
+    `created_at` timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -52,8 +52,8 @@ CREATE TABLE `events`
     `class_id`   int UNSIGNED                            NOT NULL,
     `teacher_id` int UNSIGNED                            NOT NULL,
     `subject_id` int UNSIGNED                            NOT NULL,
-    `created_at` timestamp                               NOT NULL,
-    `updated_at` timestamp                               NOT NULL,
+    `created_at` timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `location`   varchar(100) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -71,8 +71,8 @@ CREATE TABLE `grades`
     `student_id` int UNSIGNED NOT NULL,
     `subject_id` int UNSIGNED NOT NULL,
     `grade`      tinyint      NOT NULL,
-    `created_at` timestamp    NOT NULL,
-    `updated_at` timestamp    NOT NULL
+    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -87,11 +87,11 @@ CREATE TABLE `students`
 (
     `id`         int UNSIGNED NOT NULL,
     `user_id`    int UNSIGNED NOT NULL,
-    `points`     tinyint      NOT NULL,
+    `points`     smallint     NOT NULL,
     `year_group` tinyint      NOT NULL,
     `class_id`   int UNSIGNED NOT NULL,
-    `created_at` timestamp    NOT NULL,
-    `updated_at` timestamp    NOT NULL
+    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -107,8 +107,8 @@ CREATE TABLE `subjects`
     `id`           int UNSIGNED                           NOT NULL,
     `name`         varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
     `abbreviation` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-    `created_at`   timestamp                              NOT NULL,
-    `updated_at`   timestamp                              NOT NULL
+    `created_at`   timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`   timestamp                              NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -123,8 +123,8 @@ CREATE TABLE `tests`
 (
     `id`         int UNSIGNED NOT NULL,
     `event_id`   int UNSIGNED NOT NULL,
-    `created_at` timestamp    NOT NULL,
-    `updated_at` timestamp    NOT NULL
+    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
@@ -142,8 +142,8 @@ CREATE TABLE `users`
     `email`      varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
     `password`   varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
     `role`       varchar(20) COLLATE utf8mb4_general_ci  NOT NULL,
-    `created_at` timestamp                               NOT NULL,
-    `updated_at` timestamp                               NOT NULL
+    `created_at` timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;

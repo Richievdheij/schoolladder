@@ -3,8 +3,18 @@
     height: 20px;
 }
 
-#your-position, #ranking {
+#your-position, #ranking, .second-surface, .filter-button {
     border-radius: 20px;
+}
+
+.left-margin {
+    padding-left: 2rem;
+
+}
+
+.second-surface {
+    padding: 1rem;
+    margin: 2rem;
 }
 
 .row-containers {
@@ -14,9 +24,8 @@
     gap: var(--space-lg);
 }
 
-#2nd-surface {
-    border-radius: 20px;
-    padding: var(--space-lg);
+.score {
+    width: 94.5%;
 }
 
 #ranking-filters {
@@ -24,9 +33,13 @@
 }
 
 .filter-button {
-    border-radius: 20px;
     padding: 0.5rem 1rem;
-    border: none
+    border: none;
+    background-color: var(--brand-violet);
+}
+
+.filter-button:hover {
+    background-color: var(--brand-purple);
 }
 
 #ranking {
@@ -38,6 +51,7 @@
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 0fr 3fr 0fr;
+    padding: 0.5rem;
 }
 
 .first-ranking-position {
@@ -54,6 +68,13 @@
     border-radius: var(--radius-full);
 }
 
-.growth {
-    padding: 0.5rem
+.tenth-ranking-position {
+    padding: 0.5rem 0.7rem;
+    margin-right: 0.5rem;
+    background-color: var(--brand-lilac);
+    border-radius: var(--radius-full);
+}
+
+.growth, .ranking-name {
+    padding: 0.7rem
 }
