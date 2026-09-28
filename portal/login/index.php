@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors) && !empty($user)) {
         $_SESSION['user'] = $user;
-        header('Location: /');
+        header('Location: ' . BASE_URL);
         exit;
     }
 }
@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
         <div class="container">
             <div class="logoContainer">
                 <h1 style="flex: 1;">Login</h1>
-                <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
+                <img class="logo" alt="Schoolladder Logo" src="<?= BASE_URL ?>images/schoolladder-logo.png" />
             </div>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) {
             <div class="container">
                 <button type="submit" name="submit">Login</button>
                 <div>
-                    <p>Nog geen inlog? <a href="/portal/register">Registreer nu!</a></p>
+                    <p>Nog geen inlog? <a href="<?= BASE_URL ?>portal/register">Registreer nu!</a></p>
                 </div>
             </div>
         </form>
