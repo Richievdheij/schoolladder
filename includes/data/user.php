@@ -17,8 +17,17 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 /**
+ * First letter of a word. The school server has no mbstring extension, so
+ * preg_match with the u flag takes a whole UTF-8 character instead of
+ * mb_substr: a name with an accent is still not cut through a character.
+ */
+function firstLetterOf(string $word): string
+{
+    return preg_match('/^./u', $word, $match) === 1 ? $match[0] : '';
+}
+
+/**
  * First letter of the first name and of the last. One word gives one letter.
- * mb_* so a name with an accent is not cut through a character.
  */
 function initialsOf(?string $name): ?string
 {
@@ -28,14 +37,18 @@ function initialsOf(?string $name): ?string
         return null;
     }
 
-    $parts = preg_split('/\s+/', $name) ?: [$name];
-    $initials = mb_substr($parts[0], 0, 1);
+    $parts = preg_split('/\s+/u', $name) ?: [$name];
+    $initials = firstLetterOf($parts[0]);
 
     if (count($parts) > 1) {
-        $initials .= mb_substr((string) end($parts), 0, 1);
+        $initials .= firstLetterOf((string) end($parts));
     }
 
-    return mb_strtoupper($initials);
+    /* Without mbstring strtoupper only raises a-z; an accented initial then
+       stays as it is, which beats a fatal error. */
+    return function_exists('mb_strtoupper')
+        ? mb_strtoupper($initials)
+        : strtoupper($initials);
 }
 
 $sessionUser = $_SESSION['user'] ?? null;
