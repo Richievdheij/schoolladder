@@ -4,200 +4,90 @@ $page = 'ranking';
 require_once __DIR__ . '/../includes/config.php';
 /** @var mysqli $pdo */
 
-//Make the page look like the wireframe - gedaan
-//Accounts need to be made first (preferably on other page, but I can do it here for now) in order to get student names from user_id - gedaan
-//give students points, year_group and class_id. - gedaan
-//put the student names in #ranking in order of who has the most points - gedaan
-//make the filters work (with js) - gedaan
-//make the growth work based on last update - ik weet niet helemaal hoe ik dit doe...
+// Bepaal de eerste klas en jaarlaag met studenten (dynamisch)
+$first_student = db()->query("
+    SELECT s.class_id, s.year_group, c.name AS class_name
+    FROM students s
+    JOIN classes c ON s.class_id = c.id
+    ORDER BY s.id
+    LIMIT 1
+")->fetch();
 
+$current_class_id   = $first_student ? (int) $first_student['class_id'] : 1;
+$current_year_group = $first_student ? (int) $first_student['year_group'] : 4;
+$current_class_name = $first_student ? $first_student['class_name'] : 'Onbekend';
 
-//inserting all data in de database (once)
+// --- School ranking (alle studenten) ---
 
-$query = "SELECT * FROM schoolladder.users";
-$result = db()->query($query);
-
-if ($result->rowCount() == 0) {
-
-    $query = "INSERT INTO schoolladder.users (name, email, password, role)
-    VALUES
-    ('Emma de Vries', 'emmadevries@hr.nl', 'password', 'student'),
-    ('Bas de Boot', 'basdeboot@hr.nl', 'password', 'student'),
-    ('John de Boer', 'johndeboer@hr.nl', 'password', 'student'),
-    ('Lars Jansen', 'larsjansen@hr.nl', 'password', 'student'),
-    ('Emily den Bosch', 'emilydenbosch@hr.nl', 'password', 'student'),
-    ('Noah Bakker', 'noahbakker@hr.nl', 'password', 'student'),
-    ('Anna van den Berg', 'annavandenberg@hr.nl', 'password', 'student'),
-    ('Jayden Smits', 'jaydensmits@hr.nl', 'password', 'student'),
-    ('Fatma Yilmaz', 'fatmayilmaz@hr.nl', 'password', 'student'),
-    ('Melisa Yilmaz', 'melisayilmaz@hr.nl', 'password', 'student'),
-    ('Ahmet Demir', 'ahmetdemir@hr.nl', 'password', 'student'),
-    ('James de Groot', 'jamesdegroot@hr.nl', 'password', 'student'),
-    ('Noor Vos', 'noorvos@hr.nl', 'password', 'student'),
-    ('Finn Kok', 'finnkok@hr.nl', 'password', 'student'),
-    ('Peter van Leeuwen', 'petervanleeuwen@hr.nl', 'password', 'student'),
-    ('Leo Peters', 'leopeters@hr.nl', 'password', 'student'),
-    ('Christina van Dijk', 'christinavandijk@hr.nl', 'password', 'student'),
-    ('Chris van Dijk', 'chrisvandijk@hr.nl', 'password', 'student'),
-    ('Tess van Dijk', 'tessvandijk@hr.nl', 'password', 'student'),
-    ('Klaas de Haan', 'klaasdehaan@hr.nl', 'password', 'student'), 
-    ('Sarah Timmermans', 'sarahtimmermans@hr.nl', 'password', 'student'),
-    ('Saartje Timmermans', 'saartjetimmermans@hr.nl', 'password', 'student')";
-
-    $result = db()->query($query);
-}
-
-$query = "SELECT * FROM schoolladder.classes";
-$result = db()->query($query);
-
-if ($result->rowCount() == 0) {
-    $query = "INSERT INTO schoolladder.classes (name)
-VALUES
-    ('1A'),
-    ('1B'),
-    ('1C'),
-    ('2A'),
-    ('2B'),
-    ('2C'),
-    ('3A'),
-    ('3B'),
-    ('3C'),
-    ('4A'),
-    ('4B'),
-    ('4C'),
-    ('5A'),
-    ('5B'),
-    ('5C'),
-    ('6A'),
-    ('6B'),
-    ('6C')";
-    $result = db()->query($query);
-}
-
-$query = "SELECT * FROM schoolladder.students";
-$result = db()->query($query);
-
-if ($result->rowCount() == 0) {
-    $query = "INSERT INTO schoolladder.students (user_id, points, previous_points, year_group, class_id)
-VALUES
-    (1, 1356, 1343, 4, 10),
-    (2, 1350, 1346, 4, 10),
-    (3, 1302, 1293, 4, 10),
-    (4, 1285, 1280, 4, 10),
-    (5, 1260, 1250, 4, 10),
-    (6, 1248, 1225, 4, 10),
-    (7, 1233, 1228, 4, 10),
-    (8, 1210, 1205, 4, 10),
-    (9, 1194, 1194, 4, 10),
-    (10, 1150, 1140, 4, 10),
-    (11, 1145, 1142, 4, 10),
-    (12, 1369, 1345, 4, 12),
-    (13, 1341, 1336, 1, 2),
-    (14, 1290, 1286, 4, 12),
-    (15, 1245, 1240, 4, 12),
-    (16, 1330, 1325, 2, 6),
-    (17, 1262, 1257, 4, 11),
-    (18, 1299, 1284, 4, 11),
-    (19, 1300, 1296, 5, 14),
-    (20, 1375, 1360, 6, 17), 
-    (21, 1352, 1348, 6, 14),
-    (22, 1340, 1335, 3, 8)";
-    $result = db()->query($query);
-}
-
-//current rankings
-
-$query = "
+$all_students = db()->query("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id
+    FROM students
+    JOIN users ON students.user_id = users.id
     ORDER BY students.points DESC
-";
-$result = db()->query($query);
+")->fetchAll();
 
-$all_students = $result->fetchAll();
+// --- Klas ranking ---
 
-
-$query = "
+$stmt = db()->prepare("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id
-    JOIN schoolladder.classes ON students.class_id = classes.id   
-    WHERE class_id = 10
+    FROM students
+    JOIN users ON students.user_id = users.id
+    WHERE students.class_id = ?
     ORDER BY students.points DESC
-";
-$result = db()->query($query);
+");
+$stmt->execute([$current_class_id]);
+$class_students = $stmt->fetchAll();
 
-$class4A_students = $result->fetchAll();
+// --- Jaarlaag ranking ---
 
-
-$query = "
+$stmt = db()->prepare("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id   
-    WHERE year_group = 4
+    FROM students
+    JOIN users ON students.user_id = users.id
+    WHERE students.year_group = ?
     ORDER BY students.points DESC
-";
-$result = db()->query($query);
+");
+$stmt->execute([$current_year_group]);
+$year_group_students = $stmt->fetchAll();
 
-$year_group_4_students = $result->fetchAll();
+// --- Vorige posities voor groei-berekening ---
 
-
-//calculating previous ranking for growth
-
-$query = "
+$previous_all_students = db()->query("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id
+    FROM students
+    JOIN users ON students.user_id = users.id
     ORDER BY students.previous_points DESC
-";
+")->fetchAll();
 
-$result = db()->query($query);
-
-$previous_all_students = $result->fetchAll();
-
-$previous_all_students_positions = [];
-
-foreach ($previous_all_students as $position => $student) {
-    $previous_all_students_positions[$student['user_id']] = $position + 1;
+$previous_all_positions = [];
+foreach ($previous_all_students as $pos => $s) {
+    $previous_all_positions[$s['user_id']] = $pos + 1;
 }
 
-
-$query = "
+$stmt = db()->prepare("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id
-    JOIN schoolladder.classes ON students.class_id = classes.id   
-    WHERE class_id = 10
+    FROM students
+    JOIN users ON students.user_id = users.id
+    WHERE students.class_id = ?
     ORDER BY students.previous_points DESC
-";
-$result = db()->query($query);
-
-$previous_class4A_students = $result->fetchAll();
-
-$previous_class4A_positions = [];
-
-foreach ($previous_class4A_students as $position => $student) {
-    $previous_class4A_positions[$student['user_id']] = $position + 1;
+");
+$stmt->execute([$current_class_id]);
+$previous_class_positions = [];
+foreach ($stmt->fetchAll() as $pos => $s) {
+    $previous_class_positions[$s['user_id']] = $pos + 1;
 }
 
-
-$query = "
+$stmt = db()->prepare("
     SELECT students.*, users.name
-    FROM schoolladder.students
-    JOIN schoolladder.users ON students.user_id = users.id   
-    WHERE year_group = 4
+    FROM students
+    JOIN users ON students.user_id = users.id
+    WHERE students.year_group = ?
     ORDER BY students.previous_points DESC
-";
-$result = db()->query($query);
-
-$previous_year_group_4_students = $result->fetchAll();
-
-
-$previous_year_group_4_positions = [];
-
-foreach ($previous_year_group_4_students as $position => $student) {
-    $previous_year_group_4_positions[$student['user_id']] = $position + 1;
+");
+$stmt->execute([$current_year_group]);
+$previous_year_positions = [];
+foreach ($stmt->fetchAll() as $pos => $s) {
+    $previous_year_positions[$s['user_id']] = $pos + 1;
 }
 
 ?>
@@ -295,16 +185,16 @@ foreach ($previous_year_group_4_students as $position => $student) {
 
         <div class="text-row">
             <h3>Topselectie</h3>
-            <p>Klas 4A</p>
+            <p>Klas <?= e($current_class_name) ?></p>
         </div>
 
-        <?php foreach ($class4A_students as $position => $student): ?>
+        <?php foreach ($class_students as $position => $student): ?>
 
             <?php if ($position >= 10) break; ?>
 
             <?php
             $current_position = $position + 1;
-            $previous_position = $previous_class4A_positions[$student['user_id']];
+            $previous_position = $previous_class_positions[$student['user_id']] ?? $current_position;
             $growth = $previous_position - $current_position;
             ?>
 
@@ -348,15 +238,15 @@ foreach ($previous_year_group_4_students as $position => $student) {
 
         <div class="text-row">
             <h3>Topselectie</h3>
-            <p>Jaarlaag 4</p>
+            <p>Jaarlaag <?= $current_year_group ?></p>
         </div>
 
-        <?php foreach ($year_group_4_students as $position => $student): ?>
+        <?php foreach ($year_group_students as $position => $student): ?>
 
             <?php if ($position >= 10) break; ?>
             <?php
             $current_position = $position + 1;
-            $previous_position = $previous_year_group_4_positions[$student['user_id']];
+            $previous_position = $previous_year_positions[$student['user_id']] ?? $current_position;
             $growth = $previous_position - $current_position;
             ?>
 
@@ -409,7 +299,7 @@ foreach ($previous_year_group_4_students as $position => $student) {
 
             <?php
             $current_position = $position + 1;
-            $previous_position = $previous_all_students_positions[$student['user_id']];
+            $previous_position = $previous_all_positions[$student['user_id']] ?? $current_position;
             $growth = $previous_position - $current_position;
             ?>
 
