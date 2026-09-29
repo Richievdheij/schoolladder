@@ -4,7 +4,7 @@ $pageTitle = 'Rooster';
 
 
 //all the date stuff to write directly to the schedule table
-$weekOffset = -0;
+$weekOffset = -1;
 $currentWeekNumber = date('W', strtotime("$weekOffset week"));
 $monthShort = date('M', strtotime("$weekOffset week"));
 
@@ -117,7 +117,7 @@ $timeParts = [
         '12:15:10',
         '13:15:10'
 ];
-$lessonTimesDayKeys = ['ma', 'di', 'wo', 'do', 'vr',];
+$dayKeys = ['ma', 'di', 'wo', 'do', 'vr',];
 
 function getWeekEvents($weekOffset): array
 {
@@ -128,7 +128,14 @@ function getWeekEvents($weekOffset): array
 
     //query to get events of the week
     //need to join the teacher name and the subject name
-    $query = "SELECT * FROM `events` WHERE class_id=$classId";
+    $query = "
+    SELECT events.start_time, events.end_time, events.name, events.location, classes.name AS class_name,users.name AS teacher_name, subjects.name AS subject_name
+FROM `events`
+INNER JOIN classes ON events.class_id= classes.id
+INNER JOIN users ON events.teacher_id= users.id
+INNER JOIN subjects ON events.subject_id= subjects.id
+WHERE class_id =$classId
+";
     $result = mysqli_query(db, $query);
     $weekEvents = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -137,6 +144,7 @@ function getWeekEvents($weekOffset): array
 
 $weekEvents = getWeekEvents($currentWeekNumber);
 
+//fill the schedule with the eventNames at the right times
 foreach ($weekEvents as $event) {
     //checking if the pointer is between the start and endtime to write to the table
     $tablePointerTime = strtotime("$dayParts[0] $timeParts[0]");
@@ -147,11 +155,24 @@ foreach ($weekEvents as $event) {
         for ($y = 0; $y < 5; $y++) {
             $tablePointerTime = strtotime("$dayParts[$x] $timeParts[$y]");
             if ($eventStartTime < $tablePointerTime && $tablePointerTime < $eventEndTime) {
-                $lessonTimes[$y + 1][$lessonTimesDayKeys[$x]] = $event['name'];
+                $lessonTimes[$y + 1][$dayKeys[$x]] = $event['name'];
             }
         }
     }
 }
+
+//array to select the right day for the full day schedule
+$dayTimes = [
+        'Monday' => [strtotime("$weekFix[0] monday $weekOffset week 00:00:00"), strtotime("$weekFix[0] monday $weekOffset week 23:00:00")],
+        'Tuesday' => [strtotime("$weekFix[1] tuesday $weekOffset week 00:00:00"), strtotime("$weekFix[1] tuesday $weekOffset week 23:00:00")],
+        'Wednesday' => [strtotime("$weekFix[2] wednesday $weekOffset week 00:00:00"), strtotime("$weekFix[2] wednesday $weekOffset week 23:00:00")],
+        'Thursday' => [strtotime("$weekFix[3] thursday $weekOffset week 00:00:00"), strtotime("$weekFix[3] thursday $weekOffset week 23:00:00")],
+        'Friday' => [strtotime("$weekFix[4] friday $weekOffset week 00:00:00"), strtotime("$weekFix[4] friday $weekOffset week 23:00:00")],
+];
+$selectedDay = date('l');
+$dayBegin = $dayTimes[$selectedDay][0];
+$dayEnd = $dayTimes[$selectedDay][1];
+
 
 //don't touch the make events, unless there is time left to do the teacher side
 function makeEvent()
@@ -187,7 +208,7 @@ mysqli_close(db);
         <h1>Rooster</h1>
         <p>Bekijk je lessen, komende toetsen en waar je extra aandacht nodig hebt.</p>
         <div>
-            <?php for ($i = 0; $i < 5; $i++) { ?>
+            <?php for ($i = -2; $i < 3; $i++) { ?>
                 <button>W<?= $currentWeekNumber + $i ?></button>
             <?php } ?>
         </div>
@@ -201,18 +222,12 @@ mysqli_close(db);
                 <th>Do <?= $weekNumbers['do'] ?></th>
                 <th>Vr <?= $weekNumbers['vr'] ?></th>
             </tr>
-            <!--like 10 lesson hour blocks-->
-            <!--put the events in the right place-->
             <?php
             foreach ($lessonTimes as $id => $lessonTime) { ?>
                 <tr>
                     <th><?= $id ?></th>
                     <th><?= $lessonTime['time'] ?></th>
-
-                    <td>
-                        <!--subjectAbbreviation-->
-                        <?= $lessonTime['ma'] ?>
-                    </td>
+                    <td><?= $lessonTime['ma'] ?></td>
                     <td><?= $lessonTime['di'] ?></td>
                     <td><?= $lessonTime['wo'] ?></td>
                     <td><?= $lessonTime['do'] ?></td>
@@ -223,31 +238,17 @@ mysqli_close(db);
         </table>
     </section>
     <section id="day-schedule-list">
-        <div class="day-event">
-            <h3>Naam - Vak</h3>
-            <p>leraar - locatie</p>
-            <h4>start - eind</h4>
-        </div>
-        <div class="day-event">
-            <h3>Naam - Vak</h3>
-            <p>leraar - locatie</p>
-            <h4>start - eind</h4>
-        </div>
-        <!--the amount based of lessons based of today-->
         <?php
         //foreach currentDaySchedule as here-under
-        $beginDay = strtotime("this day 0:00");
-        $endDay = strtotime("this day 23:00");
-
         foreach ($weekEvents as $weekEvent) {
-            if ($weekEvent['start_time'] > $beginDay && $weekEvent['end_time'] < $endDay) {
-                //make the day schedule box
-
+            $eventTime = strtotime($weekEvent['start_time']);
+            if ($dayBegin < $eventTime && $eventTime < $dayEnd) {
                 ?>
                 <div class="day-event">
-                    <h3><?= $weekEvent['name'] ?> - <?= $weekEvent['subject'] ?></h3>
+                    <h3><?= $weekEvent['name'] ?> - <?= $weekEvent['subject_name'] ?></h3>
                     <p><?= $weekEvent['teacher_name'] ?> - <?= $weekEvent['location'] ?></p>
-                    <h4><?= $weekEvent['start_time'] ?> - <?= $weekEvent['end_time'] ?></h4>
+                    <h4><?= date('G:i', strtotime($weekEvent['start_time'])) ?>
+                        - <?= date('G:i', strtotime($weekEvent['end_time'])) ?></h4>
                 </div>
                 <?php
             }
