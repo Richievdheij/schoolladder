@@ -4,13 +4,13 @@ session_start();
 
 $page = "login";
 
+require_once __DIR__ . '/../../includes/config.php';
+$db = db();
+
 if (!empty($_SESSION['user'])) {
-    header('Location: /');
+    header('Location: ' . BASE_URL);
     exit;
 }
-
-include_once("../../includes/config.php");
-$db = db();
 
 $defaultError = "Email of wachtwoord incorrect";
 $errors = [];
