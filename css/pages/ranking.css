@@ -46,10 +46,15 @@
     background-color: var(--brand-purple);
 }
 
-.text-row {
-    display: grid;
-    grid-template-columns: 3fr 0fr;
+.text-row, .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+}
+
+.text-row {
+    padding-bottom: 1rem;
 }
 
 .ranking-row {
@@ -77,6 +82,14 @@
     padding: 0.5rem 0.7rem;
     margin-right: 0.5rem;
     background-color: var(--brand-lilac);
+    border-radius: var(--radius-full);
+}
+
+.profile {
+    padding: 0.5rem 1.1rem;
+    margin-right: 2rem;
+    margin-top: 0.7rem;
+    background-color: var(--brand-purple);
     border-radius: var(--radius-full);
 }
 
