@@ -3,8 +3,13 @@
 $pageTitle = 'Rooster';
 
 
-//all the date stuff to write directly to the schedule table
+//from somewhere else/outside
+$classId = 1;
 $weekOffset = -1;
+$selectedDay = date('l');
+
+
+//all the date stuff to write directly to the schedule table
 $currentWeekNumber = date('W', strtotime("$weekOffset week"));
 $monthShort = date('M', strtotime("$weekOffset week"));
 
@@ -119,17 +124,15 @@ $timeParts = [
 ];
 $dayKeys = ['ma', 'di', 'wo', 'do', 'vr',];
 
-function getWeekEvents($weekOffset): array
+function getWeekEvents($classId): array
 {
-    $classId = 1;
-
     //connect db
     require_once __DIR__ . '/../includes/config.php';    //gives a db as variable (not $db)
 
     //query to get events of the week
     //need to join the teacher name and the subject name
     $query = "
-    SELECT events.start_time, events.end_time, events.name, events.location, classes.name AS class_name,users.name AS teacher_name, subjects.name AS subject_name
+    SELECT events.start_time, events.end_time, events.name, events.location, classes.name AS class_name,users.name AS teacher_name, subjects.name AS subject_name, subjects.abbreviation AS subject_abbreviation
 FROM `events`
 INNER JOIN classes ON events.class_id= classes.id
 INNER JOIN users ON events.teacher_id= users.id
@@ -142,7 +145,7 @@ WHERE class_id =$classId
     return $weekEvents;
 }
 
-$weekEvents = getWeekEvents($currentWeekNumber);
+$weekEvents = getWeekEvents($classId);
 
 //fill the schedule with the eventNames at the right times
 foreach ($weekEvents as $event) {
@@ -155,11 +158,12 @@ foreach ($weekEvents as $event) {
         for ($y = 0; $y < 5; $y++) {
             $tablePointerTime = strtotime("$dayParts[$x] $timeParts[$y]");
             if ($eventStartTime < $tablePointerTime && $tablePointerTime < $eventEndTime) {
-                $lessonTimes[$y + 1][$dayKeys[$x]] = $event['name'];
+                $lessonTimes[$y + 1][$dayKeys[$x]] = $event['subject_abbreviation'];
             }
         }
     }
 }
+
 
 //array to select the right day for the full day schedule
 $dayTimes = [
@@ -169,7 +173,6 @@ $dayTimes = [
         'Thursday' => [strtotime("$weekFix[3] thursday $weekOffset week 00:00:00"), strtotime("$weekFix[3] thursday $weekOffset week 23:00:00")],
         'Friday' => [strtotime("$weekFix[4] friday $weekOffset week 00:00:00"), strtotime("$weekFix[4] friday $weekOffset week 23:00:00")],
 ];
-$selectedDay = date('l');
 $dayBegin = $dayTimes[$selectedDay][0];
 $dayEnd = $dayTimes[$selectedDay][1];
 
