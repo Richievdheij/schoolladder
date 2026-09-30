@@ -5,7 +5,7 @@ session_start();
 $page = "attendance";
 
 if (empty($_SESSION['user'])) {
-    header('Location: /portal/login');
+    header('Location: ' . BASE_URL . 'portal/login');
     exit;
 }
 
