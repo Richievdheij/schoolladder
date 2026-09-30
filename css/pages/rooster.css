@@ -1,0 +1,52 @@
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+section {
+    background-color: var(--surface-1);
+    margin: 20px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+#schedule-box {
+    button {
+        background-color: var(--surface-band);
+        margin: 20px 10px 20px 0;
+        padding: 5px 20px;
+        border-radius: 15px;
+        border: none;
+    }
+
+    button:hover {
+        background-color: var(--surface-page);
+    }
+
+    table {
+        background-color: var(--surface-band);
+        border-radius: 15px;
+        padding: 10px;
+        border-spacing: 10px;
+        width: 100%;
+    }
+
+    th, td {
+        background-color: var(--surface-1);
+        padding: 10px;
+        border-radius: 15px;
+        width: 60px;
+        height: 60px;
+    }
+}
+
+#day-schedule-list {
+    background-color: var(--surface-page);
+
+    .day-event {
+        background-color: var(--surface-1);
+        border-radius: 15px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+}
