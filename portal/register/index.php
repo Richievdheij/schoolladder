@@ -4,13 +4,13 @@ session_start();
 
 $page = "register";
 
+require_once __DIR__ . '/../../includes/config.php';
+$db = db();
+
 if (!empty($_SESSION['user'])) {
     header('Location: ' . BASE_URL);
     exit;
 }
-
-include_once("../../includes/config.php");
-$db = db();
 
 $errors = null;
 
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
         $statement = $db->prepare($query);
 
         if ($statement->execute([":name" => $name, ":email" => $email, ":password" => $password])) {
-            header('Location: /portal/login');
+            header('Location: ' . BASE_URL . 'portal/login');
             exit;
         }
     }
