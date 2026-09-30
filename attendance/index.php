@@ -4,13 +4,14 @@ session_start();
 
 $page = "attendance";
 
+
+require_once __DIR__ . '/../includes/data/user.php';
+require_once __DIR__ . '/../includes/data/attendance.php';
+
 if (empty($_SESSION['user'])) {
     header('Location: ' . BASE_URL . 'portal/login');
     exit;
 }
-
-require_once __DIR__ . '/../includes/data/user.php';
-require_once __DIR__ . '/../includes/data/attendance.php';
 
 /** @var array $attendance */
 
