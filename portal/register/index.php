@@ -2,15 +2,15 @@
 ob_start();
 session_start();
 
-if (!empty($_SESSION['user'])) {
-    header('Location: /');
-    exit;
-}
+$page = "register";
 
-include_once("../../includes/config.php");
+require_once __DIR__ . '/../../includes/config.php';
 $db = db();
 
-$pageTitle = 'Register | Schoolladder';
+if (!empty($_SESSION['user'])) {
+    header('Location: ' . BASE_URL);
+    exit;
+}
 
 $errors = null;
 
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
         $statement = $db->prepare($query);
 
         if ($statement->execute([":name" => $name, ":email" => $email, ":password" => $password])) {
-            header('Location: /portal/login');
+            header('Location: ' . BASE_URL . 'portal/login');
             exit;
         }
     }
@@ -64,11 +64,11 @@ if (isset($_POST['submit'])) {
         <div class="container">
             <div class="logoContainer">
                 <h1 style="flex: 1;">Register</h1>
-                <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
+                <img class="logo" alt="Schoolladder Logo" src="<?= BASE_URL ?>images/schoolladder-logo.png" />
             </div>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
-        <form action="" method="post" style="display: flex; flex-direction: column;">
+        <form action="" method="post">
             <?php if (!empty($errors)): ?>
                 <div class="error">
                     <?php foreach ($errors as $error): ?>
@@ -100,13 +100,14 @@ if (isset($_POST['submit'])) {
             <div class="container">
                 <button type="submit" name="submit">Registreer</button>
                 <div>
-                    <p>Al een inlog? <a href="/portal/login">Ga naar login!</a></p>
+                    <p>Al een inlog? <a href="<?= BASE_URL ?>portal/login">Ga naar login!</a></p>
                 </div>
             </div>
         </form>
     </main>
 
-    <?php require __DIR__ . '/../../includes/bottom-nav.php'; ?>
+    <?php // require __DIR__ . '/../../includes/bottom-nav.php'; 
+    ?>
 
 </body>
 

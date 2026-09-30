@@ -2,17 +2,17 @@
 ob_start();
 session_start();
 
+$page = "login";
+
+require_once __DIR__ . '/../../includes/config.php';
+$db = db();
+
 if (!empty($_SESSION['user'])) {
-    header('Location: /');
+    header('Location: ' . BASE_URL);
     exit;
 }
 
-include_once("../../includes/config.php");
-$db = db();
-
 $defaultError = "Email of wachtwoord incorrect";
-
-$pageTitle = 'Login | Schoolladder';
 $errors = [];
 
 if (isset($_POST['submit'])) {
@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
 
     if (empty($errors) && !empty($user)) {
         $_SESSION['user'] = $user;
-        header('Location: /');
+        header('Location: ' . BASE_URL);
         exit;
     }
 }
@@ -61,11 +61,11 @@ if (isset($_POST['submit'])) {
         <div class="container">
             <div class="logoContainer">
                 <h1 style="flex: 1;">Login</h1>
-                <img class="logo" alt="Schoolladder Logo" src="/images/schoolladder-logo.png" />
+                <img class="logo" alt="Schoolladder Logo" src="<?= BASE_URL ?>images/schoolladder-logo.png" />
             </div>
             <p>De plek waar je alles kunt zien wat je nodig hebt voor school!</p>
         </div>
-        <form action="" method="post" style="display: flex; flex-direction: column;">
+        <form action="" method="post">
             <?php if (!empty($errors)): ?>
                 <div class="error">
                     <?php foreach ($errors as $error): ?>
@@ -86,13 +86,14 @@ if (isset($_POST['submit'])) {
             <div class="container">
                 <button type="submit" name="submit">Login</button>
                 <div>
-                    <p>Nog geen inlog? <a href="/portal/register">Registreer nu!</a></p>
+                    <p>Nog geen inlog? <a href="<?= BASE_URL ?>portal/register">Registreer nu!</a></p>
                 </div>
             </div>
         </form>
     </main>
 
-    <?php require __DIR__ . '/../../includes/bottom-nav.php'; ?>
+    <?php // require __DIR__ . '/../../includes/bottom-nav.php'; 
+    ?>
 
 </body>
 

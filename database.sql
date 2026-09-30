@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 22 sep 2026 om 16:30
+-- Gegenereerd op: 29 sep 2026 om 11:04
 -- Serverversie: 8.4.2
--- PHP-versie: 8.4.20
+-- PHP-versie: 8.4.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -63,9 +63,33 @@ CREATE TABLE `classes` (
   `id` int UNSIGNED NOT NULL,
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `level` enum('bb','kb','gl','tl','havo','vwo') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `classes`
+--
+
+INSERT INTO `classes` (`id`, `name`, `created_at`, `updated_at`)
+VALUES (1, '1A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (2, '1B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (3, '1C', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (4, '2A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (5, '2B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (6, '2C', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (7, '3A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (8, '3B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (9, '3C', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (10, '4A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (11, '4B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (12, '4C', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (13, '5A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (14, '5B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (15, '5C', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (16, '6A', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (17, '6B', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (18, '6C', '2026-09-29 09:26:34', '2026-09-29 09:26:34');
 
 -- --------------------------------------------------------
 
@@ -81,8 +105,8 @@ CREATE TABLE `events` (
   `class_id` int UNSIGNED NOT NULL,
   `teacher_id` int UNSIGNED NOT NULL,
   `subject_id` int UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -208,11 +232,41 @@ CREATE TABLE `students` (
   `id` int UNSIGNED NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
   `points` int NOT NULL DEFAULT '0',
+  `previous_points` int NOT NULL DEFAULT '0',
   `year_group` tinyint NOT NULL,
   `class_id` int UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `students`
+--
+
+INSERT INTO `students` (`id`, `user_id`, `points`, `previous_points`, `year_group`, `class_id`, `created_at`,
+                        `updated_at`)
+VALUES (1, 1, 1356, 1343, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (2, 2, 1350, 1346, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (3, 3, 1302, 1293, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (4, 4, 1285, 1280, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (5, 5, 1260, 1250, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (6, 6, 1248, 1225, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (7, 7, 1233, 1228, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (8, 8, 1210, 1205, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (9, 9, 1194, 1194, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (10, 10, 1150, 1140, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (11, 11, 1145, 1142, 4, 10, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (12, 12, 1369, 1345, 4, 12, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (13, 13, 1341, 1336, 1, 2, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (14, 14, 1290, 1286, 4, 12, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (15, 15, 1245, 1240, 4, 12, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (16, 16, 1330, 1325, 2, 6, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (17, 17, 1262, 1257, 4, 11, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (18, 18, 1299, 1284, 4, 11, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (19, 19, 1300, 1296, 5, 14, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (20, 20, 1375, 1360, 6, 17, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (21, 21, 1352, 1348, 6, 14, '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (22, 22, 1340, 1335, 3, 8, '2026-09-29 09:26:34', '2026-09-29 09:26:34');
 
 -- --------------------------------------------------------
 
@@ -262,8 +316,8 @@ CREATE TABLE `subjects` (
 CREATE TABLE `tests` (
   `id` int UNSIGNED NOT NULL,
   `event_id` int UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -339,8 +393,37 @@ INSERT INTO `point_categories` (`id`, `name`, `slug`, `max_points`, `sort_order`
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test@test', '$2y$12$QPB5l7LQVne1o.pCzTEmveio2jIicwaNLZDvoOgpHMRbLHPmvYjKC', 'student', '2026-09-22 09:18:53', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`)
+VALUES (1, 'Emma de Vries', 'emmadevries@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (2, 'Bas de Boot', 'basdeboot@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (3, 'John de Boer', 'johndeboer@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (4, 'Lars Jansen', 'larsjansen@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (5, 'Emily den Bosch', 'emilydenbosch@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (6, 'Noah Bakker', 'noahbakker@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (7, 'Anna van den Berg', 'annavandenberg@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (8, 'Jayden Smits', 'jaydensmits@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (9, 'Fatma Yilmaz', 'fatmayilmaz@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (10, 'Melisa Yilmaz', 'melisayilmaz@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (11, 'Ahmet Demir', 'ahmetdemir@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (12, 'James de Groot', 'jamesdegroot@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (13, 'Noor Vos', 'noorvos@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (14, 'Finn Kok', 'finnkok@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (15, 'Peter van Leeuwen', 'petervanleeuwen@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (16, 'Leo Peters', 'leopeters@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (17, 'Christina van Dijk', 'christinavandijk@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (18, 'Chris van Dijk', 'chrisvandijk@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (19, 'Tess van Dijk', 'tessvandijk@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (20, 'Klaas de Haan', 'klaasdehaan@hr.nl', 'password', 'student', '2026-09-29 09:26:34', '2026-09-29 09:26:34'),
+       (21, 'Sarah Timmermans', 'sarahtimmermans@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34'),
+       (22, 'Saartje Timmermans', 'saartjetimmermans@hr.nl', 'password', 'student', '2026-09-29 09:26:34',
+        '2026-09-29 09:26:34');
 
 --
 -- Dumping data for table `zones`
@@ -515,7 +598,7 @@ ALTER TABLE `badges`
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `events`
@@ -557,7 +640,7 @@ ALTER TABLE `standing_snapshots`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `subject_levels`
@@ -581,7 +664,7 @@ ALTER TABLE `tests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `zone_checks`

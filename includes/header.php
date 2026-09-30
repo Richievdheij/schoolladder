@@ -34,24 +34,27 @@ $isPortal = in_array($page, ['login', 'register'], true);
 ?>
 
 <head>
-    <meta charset="UTF-8">
-    <?php /* viewport-fit=cover is what makes env(safe-area-inset-*) return
+   <meta charset="UTF-8">
+   <?php /* viewport-fit=cover is what makes env(safe-area-inset-*) return
              anything but 0 on an iPhone. */ ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title><?= e($pageTitle) ?></title>
+   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+   <title><?= e($pageTitle) ?></title>
 
-    <link rel="icon" href="<?= BASE_URL ?>images/schoolladder-favicon.png">
+   <link rel="icon" href="<?= BASE_URL ?>images/schoolladder-favicon.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
 
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/tokens.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/base.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
+   <link rel="stylesheet" href="<?= BASE_URL ?>css/tokens.css">
+   <link rel="stylesheet" href="<?= BASE_URL ?>css/base.css">
+   <link rel="stylesheet" href="<?= BASE_URL ?>css/components.css">
    <link rel="stylesheet" href="<?= BASE_URL ?>css/components/navbar.css">
    <link rel="stylesheet" href="<?= BASE_URL ?>css/components/bottom-nav.css">
+   <?php if ($isPortal): ?>
+      <link rel="stylesheet" href="<?= BASE_URL ?>css/pages/portal.css">
+   <?php endif; ?>
    <?php if ($hasPageStyle): ?>
       <link rel="stylesheet" href="<?= BASE_URL . $pageStyle ?>">
    <?php endif; ?>
